@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="CompilerConfiguration">
+    <bytecodeTargetLevel target="21" />
+  </component>
+  <component name="JavacSettings">
+    <option name="ADDITIONAL_OPTIONS_STRING" value="-AoutRefMapFile=C:\Users\17046\Documents\Programming\Java\MoreSparkles\build\classes\java\client\client-MoreSparkles-refmap.json -AdefaultObfuscationEnv=named:intermediary -Aquiet=true -AoutMapFileNamedIntermediary=C:\Users\17046\Documents\Programming\Java\MoreSparkles\build\loom-cache\mixin-map-net.fabricmc.yarn.1_21_1.1.21.1+build.3-v2.client.tiny -AinMapFileNamedIntermediary=C:\Gradle\gradle-8.14\bin\caches\fabric-loom\1.21.1\net.fabricmc.yarn.1_21_1.1.21.1+build.3-v2\mappings.tiny" />
+    <option name="ADDITIONAL_OPTIONS_OVERRIDE">
+      <module name="MoreSparkles.main" options="-AoutRefMapFile=C:\Users\17046\Documents\Programming\Java\MoreSparkles\build\classes\java\main\MoreSparkles-refmap.json -AdefaultObfuscationEnv=named:intermediary -Aquiet=true -AoutMapFileNamedIntermediary=C:\Users\17046\Documents\Programming\Java\MoreSparkles\build\loom-cache\mixin-map-net.fabricmc.yarn.1_21_1.1.21.1+build.3-v2.main.tiny -AinMapFileNamedIntermediary=C:\Gradle\gradle-8.14\bin\caches\fabric-loom\1.21.1\net.fabricmc.yarn.1_21_1.1.21.1+build.3-v2\mappings.tiny" />
+      <module name="MoreSparkles.test" options="-AoutRefMapFile=C:\Users\17046\Documents\Programming\Java\MoreSparkles\build\classes\java\test\test-MoreSparkles-refmap.json -AdefaultObfuscationEnv=named:intermediary -Aquiet=true -AoutMapFileNamedIntermediary=C:\Users\17046\Documents\Programming\Java\MoreSparkles\build\loom-cache\mixin-map-net.fabricmc.yarn.1_21_1.1.21.1+build.3-v2.test.tiny -AinMapFileNamedIntermediary=C:\Gradle\gradle-8.14\bin\caches\fabric-loom\1.21.1\net.fabricmc.yarn.1_21_1.1.21.1+build.3-v2\mappings.tiny" />
+    </option>
+  </component>
+</project>

@@ -1,0 +1,10 @@
+{
+  "shiny_charms": {
+    "shiny_charm": {
+      "multiplier": 2.0,
+      "lore": [
+        "<gray>Having one of these mysterious shining charms makes it more likely you'll encounter Shiny Pokémon in the wild."
+      ]
+    }
+  }
+}

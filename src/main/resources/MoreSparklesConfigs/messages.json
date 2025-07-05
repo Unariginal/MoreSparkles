@@ -1,0 +1,35 @@
+{
+  "prefix": "<gray>[<light_purple>MoreSparkles<gray>]",
+  "messages": {
+    "command_reload": "%prefix% <green>Reloaded!",
+    "player_boost_started": "%prefix% <green>Started a %multiplier%x boost for %duration% for %player.name%!",
+    "player_boost_added_to_queue": "%prefix% <green>Added a %multiplier%x boost with a %duration% duration to %player.name%'s queue!",
+    "global_boost_started": "%prefix% <green>Started a global %multiplier%x boost for %duration%!",
+    "global_boost_added_to_queue": "%prefix% <green>Added a global %multiplier%x boost with a %duration% duration to queue!",
+    "player_boost_stopped": "%prefix% <green>Stopped %player.name%'s current boost!",
+    "global_boost_stopped": "%prefix% <green>Stopped the current global boost!",
+    "command_check_rate": "%prefix% <gray>Base: <yellow>1/%base_shiny_rate%<gray> | Effective: <yellow>1/%player.shiny_rate%",
+    "player_queue_cleared": "%prefix% <green>Cleared %player.name%'s queued boosts!",
+    "global_queue_cleared": "%prefix% <green>Cleared the global queued boosts!",
+    "player_boost_information": "%prefix% <gray>Player: %player.name% | Multiplier: %multiplier%x | Timer: %time_remaining% / %duration%",
+    "global_boost_information": "%prefix% <gray>Multiplier: %multiplier%x | Timer: %time_remaining% / %duration%",
+    "no_active_boosts": "%prefix% <red>No Active Boosts",
+    "no_queued_boosts": "%prefix% <red>No Queued Boosts",
+    "area_info": "%prefix% <gray>Area \"%area%\": %area.type% type | %multiplier%x multiplier",
+    "not_in_area": "%prefix% <red>You're not in an area!"
+  },
+  "bossbar_settings": {
+    "global_boost": {
+      "bar_color": "pink",
+      "bar_overlay": "progress",
+      "bar_text": "<gray>GLOBAL %multiplier%x Shiny Boost | %time_remaining% Remaining",
+      "bar_text_paused": "<gray>GLOBAL %multiplier%x Shiny Boost | PAUSED"
+    },
+    "player_boost": {
+      "bar_color": "pink",
+      "bar_overlay": "progress",
+      "bar_text": "<gray>%multiplier%x Shiny Boost | %time_remaining% Remaining",
+      "bar_text_paused": "<gray>%multiplier%x Shiny Boost | PAUSED"
+    }
+  }
+}

@@ -1,0 +1,29 @@
+{
+  "schemaVersion": 1,
+  "id": "moresparkles",
+  "version": "${version}",
+  "name": "MoreSparkles",
+  "description": "Shiny Stuff for Cobblemon!",
+  "authors": [],
+  "contact": {},
+  "license": "All-Rights-Reserved",
+  "environment": "*",
+  "entrypoints": {
+    "main": [
+      "me.unariginal.moresparkles.MoreSparkles"
+    ]
+  },
+  "mixins": [
+    "moresparkles.mixins.json",
+    {
+      "config": "moresparkles.client.mixins.json",
+      "environment": "client"
+    }
+  ],
+  "depends": {
+    "fabricloader": ">=${loader_version}",
+    "fabric": "*",
+    "minecraft": "${minecraft_version}",
+    "cobblemon": ">=1.6.1+1.21.1"
+  }
+}

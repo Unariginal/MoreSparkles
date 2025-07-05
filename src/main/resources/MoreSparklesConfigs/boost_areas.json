@@ -1,0 +1,39 @@
+{
+  "cuboid_example": {
+    "type": "cuboid",
+    "multiplier": 10.0,
+    "shape": {
+      "world": "minecraft:overworld",
+      "x_min": -200.0,
+      "x_max": -100.0,
+      "y_min": -64.0,
+      "y_max": -50.0,
+      "z_min": 235.0,
+      "z_max": 335.0
+    },
+    "particles": {
+      "enabled": true,
+      "identifier": "minecraft:end_rod",
+      "speed": 0.0,
+      "count": 2
+    }
+  },
+  "cylinder_example": {
+    "type": "cylinder",
+    "multiplier": 10.0,
+    "shape": {
+      "world": "minecraft:overworld",
+      "center_x": 0,
+      "center_z": 0,
+      "radius": 10,
+      "y_min": -64,
+      "y_max": -50
+    },
+    "particles": {
+      "enabled": true,
+      "identifier": "minecraft:end_rod",
+      "speed": 0.0,
+      "count": 2
+    }
+  }
+}
