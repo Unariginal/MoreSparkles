@@ -23,16 +23,16 @@ public class PlayerDataManager {
             try {
                 JsonObject root = JsonParser.parseReader(new FileReader(playerFile)).getAsJsonObject();
                 if (!root.has("active_boost")) {
-                    MoreSparkles.INSTANCE.logError("[MoreSparkles] Failed To Load Player Data File: " + playerFile.getName());
-                    MoreSparkles.INSTANCE.logError(" - File is missing data!");
+                    MoreSparkles.LOGGER.error("[MoreSparkles] Failed To Load Player Data File: {}", playerFile.getName());
+                    MoreSparkles.LOGGER.error(" - File is missing data!");
                     return null;
                 }
                 JsonObject activeBoost = root.getAsJsonObject("active_boost");
                 if (!(activeBoost.has("multiplier") &&
                         activeBoost.has("time_remaining") &&
                         activeBoost.has("duration"))) {
-                    MoreSparkles.INSTANCE.logError("[MoreSparkles] Failed To Load Player Data File: " + playerFile.getName());
-                    MoreSparkles.INSTANCE.logError(" - File is missing data!");
+                    MoreSparkles.LOGGER.error("[MoreSparkles] Failed To Load Player Data File: {}", playerFile.getName());
+                    MoreSparkles.LOGGER.error(" - File is missing data!");
                     return null;
                 }
 
@@ -55,8 +55,8 @@ public class PlayerDataManager {
 
                 return new ShinyBoost(player, multiplier, duration, time_remaining);
             } catch (FileNotFoundException e) {
-                MoreSparkles.INSTANCE.logError("[MoreSparkles] Failed To Load Player Data File: " + playerFile.getName());
-                MoreSparkles.INSTANCE.logError(" - " + e.getMessage());
+                MoreSparkles.LOGGER.error("[MoreSparkles] Failed To Load Player Data File: {}", playerFile.getName());
+                MoreSparkles.LOGGER.error(" - {}", e.getMessage());
             }
         }
         return null;
@@ -106,8 +106,8 @@ public class PlayerDataManager {
             gson.toJson(root, writer);
             writer.close();
         } catch (IOException e) {
-            MoreSparkles.INSTANCE.logError("[MoreSparkles] Failed To Save Player Data File: " + playerFile.getName());
-            MoreSparkles.INSTANCE.logError(e.getMessage());
+            MoreSparkles.LOGGER.error("[MoreSparkles] Failed To Save Player Data File: {}", playerFile.getName());
+            MoreSparkles.LOGGER.error(e.getMessage());
         }
     }
 
@@ -154,8 +154,8 @@ public class PlayerDataManager {
             gson.toJson(root, writer);
             writer.close();
         } catch (IOException e) {
-            MoreSparkles.INSTANCE.logError("[MoreSparkles] Failed To Save Player Data File: " + playerFile.getName());
-            MoreSparkles.INSTANCE.logError(e.getMessage());
+            MoreSparkles.LOGGER.error("[MoreSparkles] Failed To Save Player Data File: {}", playerFile.getName());
+            MoreSparkles.LOGGER.error(e.getMessage());
         }
     }
 
