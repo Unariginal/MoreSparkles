@@ -9,38 +9,38 @@ import net.minecraft.text.Text;
 import java.util.UUID;
 
 public class ShinyBoost {
-    public UUID player_uuid = null;
+    public UUID playerUUID = null;
     public float multiplier;
     public int duration;
-    public long time_remaining;
+    public long timeRemaining;
     public BossBar bossBar;
 
     public ShinyBoost(ServerPlayerEntity player, float multiplier, int duration) {
         if (player != null)
-            this.player_uuid = player.getUuid();
+            this.playerUUID = player.getUuid();
         this.multiplier = multiplier;
         this.duration = duration;
-        this.time_remaining = duration * 20L;
-        if (player_uuid == null)
+        this.timeRemaining = duration * 20L;
+        if (playerUUID == null)
             this.bossBar = BossBar.bossBar(getBossBarText(), 1F, MoreSparkles.INSTANCE.getMessages().globalBarColor, MoreSparkles.INSTANCE.getMessages().globalBarOverlay);
         else
             this.bossBar = BossBar.bossBar(getBossBarText(), 1F, MoreSparkles.INSTANCE.getMessages().playerBarColor, MoreSparkles.INSTANCE.getMessages().playerBarOverlay);
     }
 
-    public ShinyBoost(ServerPlayerEntity player, float multiplier, int duration, long time_remaining) {
+    public ShinyBoost(ServerPlayerEntity player, float multiplier, int duration, long timeRemaining) {
         if (player != null)
-            this.player_uuid = player.getUuid();
+            this.playerUUID = player.getUuid();
         this.multiplier = multiplier;
         this.duration = duration;
-        this.time_remaining = time_remaining;
-        if (player_uuid == null)
+        this.timeRemaining = timeRemaining;
+        if (playerUUID == null)
             this.bossBar = BossBar.bossBar(getBossBarText(), 1F, MoreSparkles.INSTANCE.getMessages().globalBarColor, MoreSparkles.INSTANCE.getMessages().globalBarOverlay);
         else
             this.bossBar = BossBar.bossBar(getBossBarText(), 1F, MoreSparkles.INSTANCE.getMessages().playerBarColor, MoreSparkles.INSTANCE.getMessages().playerBarOverlay);
     }
 
     public Text getBossBarText() {
-        if (player_uuid == null)
+        if (playerUUID == null)
             return TextUtils.deserialize(TextUtils.parse(MoreSparkles.INSTANCE.getMessages().globalBarText, this));
         else
             return TextUtils.deserialize(TextUtils.parse(MoreSparkles.INSTANCE.getMessages().playerBarText, this));

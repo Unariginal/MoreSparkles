@@ -27,8 +27,8 @@ public class TextUtils {
 
     public static String parse(String text, ShinyBoost boost) {
         text = parse(text);
-        if (boost.player_uuid != null) {
-            ServerPlayerEntity player = MoreSparkles.INSTANCE.getServer().getPlayerManager().getPlayer(boost.player_uuid);
+        if (boost.playerUUID != null) {
+            ServerPlayerEntity player = MoreSparkles.INSTANCE.getServer().getPlayerManager().getPlayer(boost.playerUUID);
             if (player != null) {
                 text = parse(text, player);
             }
@@ -36,7 +36,7 @@ public class TextUtils {
         return text
                 .replaceAll("%multiplier%", String.valueOf(boost.multiplier))
                 .replaceAll("%duration%", hms(boost.duration))
-                .replaceAll("%time_remaining%", hms(boost.time_remaining / 20L));
+                .replaceAll("%time_remaining%", hms(boost.timeRemaining / 20L));
     }
 
     public static String parse(String text, ServerPlayerEntity player) {

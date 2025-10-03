@@ -85,7 +85,7 @@ public class PlayerDataManager {
 
         JsonObject activeBoost = new JsonObject();
         activeBoost.addProperty("multiplier", shinyBoost.multiplier);
-        activeBoost.addProperty("time_remaining", shinyBoost.time_remaining);
+        activeBoost.addProperty("time_remaining", shinyBoost.timeRemaining);
         activeBoost.addProperty("duration", shinyBoost.duration);
         root.add("active_boost", activeBoost);
 
@@ -112,7 +112,7 @@ public class PlayerDataManager {
     }
 
     public static void savePlayerBoostData(ShinyBoost shinyBoost) {
-        if (shinyBoost.player_uuid == null) return;
+        if (shinyBoost.playerUUID == null) return;
 
         File rootFolder = FabricLoader.getInstance().getConfigDir().resolve("MoreSparkles").toFile();
         if (!rootFolder.exists())
@@ -122,23 +122,23 @@ public class PlayerDataManager {
         if (!playersFolder.exists())
             playersFolder.mkdir();
 
-        File playerFile = FabricLoader.getInstance().getConfigDir().resolve("MoreSparkles/playerdata/" + shinyBoost.player_uuid + ".json").toFile();
+        File playerFile = FabricLoader.getInstance().getConfigDir().resolve("MoreSparkles/playerdata/" + shinyBoost.playerUUID + ".json").toFile();
 
         JsonObject root = new JsonObject();
-        ServerPlayerEntity player = MoreSparkles.INSTANCE.getServer().getPlayerManager().getPlayer(shinyBoost.player_uuid);
-        root.addProperty("uuid", shinyBoost.player_uuid.toString());
+        ServerPlayerEntity player = MoreSparkles.INSTANCE.getServer().getPlayerManager().getPlayer(shinyBoost.playerUUID);
+        root.addProperty("uuid", shinyBoost.playerUUID.toString());
         if (player != null) {
             root.addProperty("username", player.getNameForScoreboard());
         }
 
         JsonObject activeBoost = new JsonObject();
         activeBoost.addProperty("multiplier", shinyBoost.multiplier);
-        activeBoost.addProperty("time_remaining", shinyBoost.time_remaining);
+        activeBoost.addProperty("time_remaining", shinyBoost.timeRemaining);
         activeBoost.addProperty("duration", shinyBoost.duration);
         root.add("active_boost", activeBoost);
 
         JsonArray queuedBoostsArray = new JsonArray();
-        for (ShinyBoost queuedBoost : MoreSparkles.INSTANCE.getQueuedBoosts(shinyBoost.player_uuid)) {
+        for (ShinyBoost queuedBoost : MoreSparkles.INSTANCE.getQueuedBoosts(shinyBoost.playerUUID)) {
             JsonObject queuedBoostObject = new JsonObject();
             queuedBoostObject.addProperty("multiplier", queuedBoost.multiplier);
             queuedBoostObject.addProperty("duration", queuedBoost.duration);

@@ -158,7 +158,7 @@ public class SparkleCommands {
                                                                     CommandManager.literal("global")
                                                                             .executes(ctx -> {
                                                                                 ctx.getSource().sendMessage(TextUtils.deserialize(TextUtils.parse(MoreSparkles.INSTANCE.getMessages().getMessage("global_boost_stopped"), MoreSparkles.INSTANCE.globalBoost)));
-                                                                                MoreSparkles.INSTANCE.globalBoost.time_remaining = 1;
+                                                                                MoreSparkles.INSTANCE.globalBoost.timeRemaining = 1;
                                                                                 return 1;
                                                                             })
                                                             )

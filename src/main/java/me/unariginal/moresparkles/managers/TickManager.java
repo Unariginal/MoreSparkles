@@ -18,19 +18,19 @@ public class TickManager {
         List<ShinyBoost> toRemove = new ArrayList<>();
         if (MoreSparkles.INSTANCE.globalBoost == null || !MoreSparkles.INSTANCE.getConfig().pausePlayerBoostsDuringGlobalBoost) {
             for (ShinyBoost boost : MoreSparkles.INSTANCE.activeBoosts) {
-                ServerPlayerEntity player = MoreSparkles.INSTANCE.getServer().getPlayerManager().getPlayer(boost.player_uuid);
+                ServerPlayerEntity player = MoreSparkles.INSTANCE.getServer().getPlayerManager().getPlayer(boost.playerUUID);
                 if (player != null || !MoreSparkles.INSTANCE.getConfig().pausePlayerBoostsOnDisconnect) {
-                    boost.time_remaining--;
+                    boost.timeRemaining--;
                 }
-                if (boost.time_remaining <= 0) {
+                if (boost.timeRemaining <= 0) {
                     toRemove.add(boost);
                 }
             }
         }
 
         if (MoreSparkles.INSTANCE.globalBoost != null) {
-            MoreSparkles.INSTANCE.globalBoost.time_remaining--;
-            if (MoreSparkles.INSTANCE.globalBoost.time_remaining <= 0) {
+            MoreSparkles.INSTANCE.globalBoost.timeRemaining--;
+            if (MoreSparkles.INSTANCE.globalBoost.timeRemaining <= 0) {
                 MoreSparkles.INSTANCE.getAudiences().all().hideBossBar(MoreSparkles.INSTANCE.globalBoost.bossBar);
                 MoreSparkles.INSTANCE.globalBoost = MoreSparkles.INSTANCE.queuedGlobalBoosts.poll();
                 if (MoreSparkles.INSTANCE.globalBoost != null) {
@@ -42,7 +42,7 @@ public class TickManager {
 
         for (ShinyBoost boost : toRemove) {
             MoreSparkles.INSTANCE.activeBoosts.remove(boost);
-            ServerPlayerEntity player = MoreSparkles.INSTANCE.getServer().getPlayerManager().getPlayer(boost.player_uuid);
+            ServerPlayerEntity player = MoreSparkles.INSTANCE.getServer().getPlayerManager().getPlayer(boost.playerUUID);
             if (player != null) {
                 player.hideBossBar(boost.bossBar);
                 ShinyBoost nextBoost = MoreSparkles.INSTANCE.getNextQueuedBoost(player);
@@ -58,11 +58,11 @@ public class TickManager {
 
     public static void updateBossbars() {
         for (ShinyBoost boost : MoreSparkles.INSTANCE.activeBoosts) {
-            ServerPlayerEntity player = MoreSparkles.INSTANCE.getServer().getPlayerManager().getPlayer(boost.player_uuid);
+            ServerPlayerEntity player = MoreSparkles.INSTANCE.getServer().getPlayerManager().getPlayer(boost.playerUUID);
             if (player != null) {
                 if (MoreSparkles.INSTANCE.globalBoost == null || !MoreSparkles.INSTANCE.getConfig().pausePlayerBoostsDuringGlobalBoost) {
                     float progressRate = 1.0F / (boost.duration * 20L);
-                    float total = progressRate * boost.time_remaining;
+                    float total = progressRate * boost.timeRemaining;
 
                     if (total < 0F)
                         total = 0F;
@@ -87,7 +87,7 @@ public class TickManager {
         }
         if (MoreSparkles.INSTANCE.globalBoost != null) {
             float progressRate = 1.0F / (MoreSparkles.INSTANCE.globalBoost.duration * 20L);
-            float total = progressRate * MoreSparkles.INSTANCE.globalBoost.time_remaining;
+            float total = progressRate * MoreSparkles.INSTANCE.globalBoost.timeRemaining;
 
             if (total < 0F)
                 total = 0F;

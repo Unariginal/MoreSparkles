@@ -61,7 +61,7 @@ public class Config {
         }
         if (MoreSparkles.INSTANCE.globalBoost != null) {
             activeGlobalBoost.addProperty("multiplier", MoreSparkles.INSTANCE.globalBoost.multiplier);
-            activeGlobalBoost.addProperty("time_remaining", MoreSparkles.INSTANCE.globalBoost.time_remaining);
+            activeGlobalBoost.addProperty("time_remaining", MoreSparkles.INSTANCE.globalBoost.timeRemaining);
             activeGlobalBoost.addProperty("duration", MoreSparkles.INSTANCE.globalBoost.duration);
         }
         newRoot.add("active_global_boost", activeGlobalBoost);
@@ -122,7 +122,7 @@ public class Config {
 
         if (MoreSparkles.INSTANCE.globalBoost != null) {
             activeGlobalBoost.addProperty("multiplier", MoreSparkles.INSTANCE.globalBoost.multiplier);
-            activeGlobalBoost.addProperty("time_remaining", MoreSparkles.INSTANCE.globalBoost.time_remaining);
+            activeGlobalBoost.addProperty("time_remaining", MoreSparkles.INSTANCE.globalBoost.timeRemaining);
             activeGlobalBoost.addProperty("duration", MoreSparkles.INSTANCE.globalBoost.duration);
         }
         root.add("active_global_boost", activeGlobalBoost);

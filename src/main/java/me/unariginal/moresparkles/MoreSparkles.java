@@ -93,12 +93,12 @@ public class MoreSparkles implements ModInitializer {
         });
 
         ServerLifecycleEvents.SERVER_STARTED.register(server -> {
-             shinySubscription = CobblemonEvents.SHINY_CHANCE_CALCULATION.subscribe(Priority.NORMAL, event -> {
+            shinySubscription = CobblemonEvents.SHINY_CHANCE_CALCULATION.subscribe(Priority.NORMAL, event -> {
                 if (globalBoost == null || !config.pausePlayerBoostsDuringGlobalBoost) {
                     for (ShinyBoost shinyBoost : activeBoosts) {
                         event.addModificationFunction(((rate, player, pokemon) -> {
                             if (player != null) {
-                                if (shinyBoost.player_uuid.equals(player.getUuid())) {
+                                if (shinyBoost.playerUUID.equals(player.getUuid())) {
                                     return Math.max(rate / shinyBoost.multiplier, 1);
                                 }
                             }
@@ -122,17 +122,16 @@ public class MoreSparkles implements ModInitializer {
                     });
                 }
 
-                 event.addModificationFunction((rate, player, pokemon) -> {
-                     if (player != null) {
-                         for (String key : ShinyCharms.INSTANCE.shinyCharmPolymerItems.keySet()) {
-                             if (player.getInventory().contains(ShinyCharms.INSTANCE.getShinyCharm(key))) {
-                                 rate = Math.max(rate / ShinyCharms.INSTANCE.shinyCharmPolymerItems.get(key).getMultiplier(), 1);
-                             }
-                         }
-                     }
-                     return rate;
-                 });
-
+                event.addModificationFunction((rate, player, pokemon) -> {
+                    if (player != null) {
+                        for (String key : ShinyCharms.INSTANCE.shinyCharmPolymerItems.keySet()) {
+                            if (player.getInventory().contains(ShinyCharms.INSTANCE.getShinyCharm(key))) {
+                                rate = Math.max(rate / ShinyCharms.INSTANCE.shinyCharmPolymerItems.get(key).getMultiplier(), 1);
+                            }
+                        }
+                    }
+                    return rate;
+                });
                 return Unit.INSTANCE;
             });
         });
@@ -151,13 +150,16 @@ public class MoreSparkles implements ModInitializer {
             if (globalBoost != null)
                 player.hideBossBar(globalBoost.bossBar);
             PlayerDataManager.savePlayerBoostData(player);
+            activeBoosts.removeIf(shinyBoost -> shinyBoost.playerUUID.equals(player.getUuid()));
         });
 
         ServerPlayConnectionEvents.JOIN.register((serverPlayNetworkHandler, sender, minecraftServer) -> {
             ServerPlayerEntity player = serverPlayNetworkHandler.getPlayer();
             ShinyBoost boost = PlayerDataManager.loadPlayerBoostData(player);
+            activeBoosts.removeIf(shinyBoost -> shinyBoost.playerUUID.equals(player.getUuid()));
             if (boost != null) {
                 activeBoosts.add(boost);
+                player.showBossBar(boost.bossBar);
             }
             if (globalBoost != null) {
                 player.showBossBar(globalBoost.bossBar);
@@ -233,7 +235,7 @@ public class MoreSparkles implements ModInitializer {
 
     public ShinyBoost getActiveBoost(ServerPlayerEntity player) {
         for (ShinyBoost boost : activeBoosts) {
-            if (boost.player_uuid.equals(player.getUuid())) {
+            if (boost.playerUUID.equals(player.getUuid())) {
                 return boost;
             }
         }
@@ -242,7 +244,7 @@ public class MoreSparkles implements ModInitializer {
 
     public ShinyBoost getNextQueuedBoost(ServerPlayerEntity player) {
         for (ShinyBoost boost : queuedBoosts) {
-            if (boost.player_uuid.equals(player.getUuid())) {
+            if (boost.playerUUID.equals(player.getUuid())) {
                 return boost;
             }
         }
@@ -252,7 +254,7 @@ public class MoreSparkles implements ModInitializer {
     public List<ShinyBoost> getQueuedBoosts(ServerPlayerEntity player) {
         List<ShinyBoost> boosts = new ArrayList<>();
         for (ShinyBoost boost : queuedBoosts) {
-            if (boost.player_uuid.equals(player.getUuid())) {
+            if (boost.playerUUID.equals(player.getUuid())) {
                 boosts.add(boost);
             }
         }
@@ -262,7 +264,7 @@ public class MoreSparkles implements ModInitializer {
     public List<ShinyBoost> getQueuedBoosts(UUID uuid) {
         List<ShinyBoost> boosts = new ArrayList<>();
         for (ShinyBoost boost : queuedBoosts) {
-            if (boost.player_uuid.equals(uuid)) {
+            if (boost.playerUUID.equals(uuid)) {
                 boosts.add(boost);
             }
         }
@@ -272,7 +274,7 @@ public class MoreSparkles implements ModInitializer {
     public void clearQueue(ServerPlayerEntity player) {
         List<ShinyBoost> toRemove = new ArrayList<>();
         for (ShinyBoost boost : queuedBoosts) {
-            if (boost.player_uuid.equals(player.getUuid())) {
+            if (boost.playerUUID.equals(player.getUuid())) {
                 toRemove.add(boost);
             }
         }
