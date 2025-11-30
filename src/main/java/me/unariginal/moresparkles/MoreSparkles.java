@@ -137,9 +137,13 @@ public class MoreSparkles implements ModInitializer {
         });
 
         ServerTickEvents.END_SERVER_TICK.register(server -> {
-            TickManager.tickBoosts();
-            TickManager.updateBossbars();
-            TickManager.tickParticles();
+            try {
+                TickManager.tickBoosts();
+                TickManager.updateBossbars();
+                TickManager.tickParticles();
+            } catch (IllegalArgumentException e) {
+                LOGGER.error("Caught bossbar exception! ", e);
+            }
         });
 
         ServerPlayConnectionEvents.DISCONNECT.register((serverPlayNetworkHandler, minecraftServer) -> {

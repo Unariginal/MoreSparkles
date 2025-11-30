@@ -56,7 +56,7 @@ public class TickManager {
         }
     }
 
-    public static void updateBossbars() {
+    public static void updateBossbars() throws IllegalArgumentException {
         for (ShinyBoost boost : MoreSparkles.INSTANCE.activeBoosts) {
             ServerPlayerEntity player = MoreSparkles.INSTANCE.getServer().getPlayerManager().getPlayer(boost.playerUUID);
             if (player != null) {
@@ -75,9 +75,9 @@ public class TickManager {
                             boost.bossBar.name(boost.getBossBarText());
                         }
                     } catch (Exception e) {
-                        MoreSparkles.INSTANCE.logError("[MoreSparkles] BossBar update failed: " + e.getMessage());
+                        MoreSparkles.logError("[MoreSparkles] BossBar update failed: " + e.getMessage());
                         for (StackTraceElement stackTraceElement : e.getStackTrace()) {
-                            MoreSparkles.INSTANCE.logError("  " + stackTraceElement.toString());
+                            MoreSparkles.logError("  " + stackTraceElement.toString());
                         }
                     }
                 } else {
