@@ -191,12 +191,12 @@ public class MoreSparkles implements ModInitializer {
 
     public static void logInfo(String info) {
         if (DEBUG) {
-            LOGGER.info(info);
+            LOGGER.info("[Sparkles] {}", info);
         }
     }
 
     public static void logError(String error) {
-        LOGGER.error(error);
+        LOGGER.error("[Sparkles] {}", error);
     }
 
     public void reload(boolean fromCommand) {

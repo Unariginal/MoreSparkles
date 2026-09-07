@@ -29,7 +29,6 @@ public class ShinyCharms {
         return shinyCharmPolymerItems.get(id).getDefaultStack();
     }
 
-
     public Map<String, ShinyCharmPolymerItem> shinyCharmPolymerItems = new HashMap<>();
     public Map<String, PolymerModelData> shinyCharmPolymerModelData = new HashMap<>();
 

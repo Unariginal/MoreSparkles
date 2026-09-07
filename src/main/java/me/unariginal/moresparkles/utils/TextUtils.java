@@ -43,10 +43,14 @@ public class TextUtils {
         text = parse(text);
         if (player != null) {
             AtomicReference<Float> shinyRate = new AtomicReference<>(Cobblemon.config.getShinyRate());
-            CobblemonEvents.SHINY_CHANCE_CALCULATION.post(new ShinyChanceCalculationEvent[]{new ShinyChanceCalculationEvent(Cobblemon.config.getShinyRate(), new PokemonProperties().create(player))}, event -> {
-                shinyRate.set(event.calculate(player));
-                return Unit.INSTANCE;
-            });
+            try {
+                CobblemonEvents.SHINY_CHANCE_CALCULATION.post(new ShinyChanceCalculationEvent[]{new ShinyChanceCalculationEvent(Cobblemon.config.getShinyRate(), new PokemonProperties().create(player))}, event -> {
+                    shinyRate.set(event.calculate(player));
+                    return Unit.INSTANCE;
+                });
+            } catch (Exception e) {
+                MoreSparkles.LOGGER.error("[MoreSparkles] Bad", e);
+            }
             return text
                     .replaceAll("%player.uuid%", player.getUuid().toString())
                     .replaceAll("%player.name%", player.getNameForScoreboard())
@@ -71,7 +75,6 @@ public class TextUtils {
         long hours;
         long minutes;
         long seconds = raw_time;
-        long temp;
 
         String output = "";
 
