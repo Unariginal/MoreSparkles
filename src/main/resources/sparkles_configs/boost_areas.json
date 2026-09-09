@@ -1,7 +1,9 @@
 {
   "cuboid_example": {
     "type": "cuboid",
+    "display_name": "Cubical Shinies",
     "multiplier": 10.0,
+    "boost_type": "shiny",
     "shape": {
       "world": "minecraft:overworld",
       "x_min": -200.0,
@@ -20,7 +22,9 @@
   },
   "cylinder_example": {
     "type": "cylinder",
+    "display_name": "Cylindrical Shinies",
     "multiplier": 10.0,
+    "boost_type": "shiny",
     "shape": {
       "world": "minecraft:overworld",
       "center_x": 0,

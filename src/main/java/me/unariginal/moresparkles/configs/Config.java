@@ -1,7 +1,6 @@
 package me.unariginal.moresparkles.configs;
 
 import com.google.common.collect.Maps;
-import com.google.gson.*;
 import me.unariginal.moresparkles.data.Boost;
 import me.unariginal.moresparkles.data.BoostType;
 import me.unariginal.moresparkles.managers.BoostManager;
@@ -17,19 +16,19 @@ import static me.unariginal.moresparkles.utils.GsonUtils.gson;
 
 public class Config {
     public boolean debug;
-    public boolean pausePlayerBoostsDuringGlobalBoost;
     public boolean allowQueuedBoosts;
+    public boolean pausePlayerBoostsDuringGlobalBoost;
     public boolean pausePlayerBoostsOnDisconnect;
     public boolean pausePlayerBoostsOnShutdown;
     public boolean pauseGlobalBoostsOnShutdown;
     @Nullable
-    public Map<BoostType, Boost> activeGlobalBoost;
+    public Map<BoostType, Boost> activeGlobalBoosts;
     @Nullable
     public Map<BoostType, LinkedList<Boost>> queuedGlobalBoosts;
 
     public static void saveGlobalBoostData() {
-        CONFIG.activeGlobalBoost = BoostManager.globalBoosts;
-        if (CONFIG.activeGlobalBoost != null && CONFIG.activeGlobalBoost.isEmpty()) CONFIG.activeGlobalBoost = null;
+        CONFIG.activeGlobalBoosts = BoostManager.globalBoosts;
+        if (CONFIG.activeGlobalBoosts != null && CONFIG.activeGlobalBoosts.isEmpty()) CONFIG.activeGlobalBoosts = null;
 
         Map<BoostType, Queue<Boost>> queuedBoosts = BoostManager.queuedGlobalBoosts;
         Map<BoostType, LinkedList<Boost>> listQueuedBoost;

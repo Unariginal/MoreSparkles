@@ -1,19 +1,10 @@
 {
   "debug": false,
-  "pause_player_boosts_during_global_boost": true,
   "allow_queued_boosts": true,
+  "pause_player_boosts_during_global_boost": true,
   "pause_player_boosts_on_disconnect": true,
   "pause_player_boosts_on_shutdown": true,
   "pause_global_boosts_on_shutdown": true,
-  "active_global_boost": {
-    "multiplier": 2.0,
-    "time_remaining": 1000,
-    "duration": 60
-  },
-  "queued_global_boosts": [
-    {
-      "multiplier": 4.0,
-      "duration": 60
-    }
-  ]
+  "active_global_boosts": null,
+  "queued_global_boosts": null
 }
