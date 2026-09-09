@@ -1,172 +1,61 @@
 package me.unariginal.moresparkles.configs;
 
+import com.google.common.collect.Maps;
 import com.google.gson.*;
-import me.unariginal.moresparkles.MoreSparkles;
-import me.unariginal.moresparkles.data.ShinyBoost;
-import net.fabricmc.loader.api.FabricLoader;
+import me.unariginal.moresparkles.cache.PlayerBoostCache;
+import me.unariginal.moresparkles.cache.PlayerBoostQueueCache;
+import me.unariginal.moresparkles.data.Boost;
+import me.unariginal.moresparkles.data.BoostType;
 import net.minecraft.server.network.ServerPlayerEntity;
 
 import java.io.*;
+import java.util.HashMap;
+import java.util.LinkedList;
+import java.util.Map;
+import java.util.Queue;
 
+import static me.unariginal.moresparkles.utils.GsonUtils.gson;
+
+@SuppressWarnings("ResultOfMethodCallIgnored")
 public class PlayerDataManager {
-    public static ShinyBoost loadPlayerBoostData(ServerPlayerEntity player) {
-        File rootFolder = FabricLoader.getInstance().getConfigDir().resolve("MoreSparkles").toFile();
-        if (!rootFolder.exists())
-            rootFolder.mkdir();
-
-        File playersFolder = FabricLoader.getInstance().getConfigDir().resolve("MoreSparkles/playerdata").toFile();
-        if (!playersFolder.exists())
-            playersFolder.mkdir();
-
-        File playerFile = FabricLoader.getInstance().getConfigDir().resolve("MoreSparkles/playerdata/" + player.getUuidAsString() + ".json").toFile();
-        if (playerFile.exists()) {
-            try {
-                JsonObject root = JsonParser.parseReader(new FileReader(playerFile)).getAsJsonObject();
-                if (!root.has("active_boost")) {
-                    MoreSparkles.LOGGER.error("[MoreSparkles] Failed To Load Player Data File: {}", playerFile.getName());
-                    MoreSparkles.LOGGER.error(" - File is missing data!");
-                    return null;
-                }
-                JsonObject activeBoost = root.getAsJsonObject("active_boost");
-                if (!(activeBoost.has("multiplier") &&
-                        activeBoost.has("time_remaining") &&
-                        activeBoost.has("duration"))) {
-                    MoreSparkles.LOGGER.error("[MoreSparkles] Failed To Load Player Data File: {}", playerFile.getName());
-                    MoreSparkles.LOGGER.error(" - File is missing data!");
-                    return null;
-                }
-
-                float multiplier = activeBoost.get("multiplier").getAsFloat();
-                long time_remaining = activeBoost.get("time_remaining").getAsLong();
-                int duration = activeBoost.get("duration").getAsInt();
-
-                if (MoreSparkles.INSTANCE.getConfig().allowQueuedBoosts) {
-                    if (root.has("queued_boosts")) {
-                        MoreSparkles.INSTANCE.clearQueue(player);
-                        JsonArray queuedBoostsArray = root.getAsJsonArray("queued_boosts");
-                        for (JsonElement queuedBoostElement : queuedBoostsArray) {
-                            JsonObject queuedBoost = queuedBoostElement.getAsJsonObject();
-                            if (!(queuedBoost.has("multiplier") &&
-                                    queuedBoost.has("duration"))) continue;
-                            MoreSparkles.INSTANCE.queuedBoosts.add(new ShinyBoost(player, queuedBoost.get("multiplier").getAsFloat(), queuedBoost.get("duration").getAsInt()));
-                        }
-                    }
-                }
-
-                return new ShinyBoost(player, multiplier, duration, time_remaining);
-            } catch (FileNotFoundException e) {
-                MoreSparkles.LOGGER.error("[MoreSparkles] Failed To Load Player Data File: {}", playerFile.getName());
-                MoreSparkles.LOGGER.error(" - {}", e.getMessage());
-            }
-        }
-        return null;
+    public static void loadPlayerBoostData(ServerPlayerEntity player) {
+        PlayerData playerData = ConfigManager.loadFile("/players/" + player.getUuidAsString() + ".json", PlayerData.class);
+        if (playerData == null) return;
+        playerData.activeBoosts.values().forEach(boost -> {
+            boost.resume();
+            PlayerBoostCache.add(player, boost);
+        });
+        playerData.queuedBoosts.values().forEach(boostList -> boostList.forEach(boost -> PlayerBoostQueueCache.queueBoost(player, boost)));
     }
 
     public static void savePlayerBoostData(ServerPlayerEntity player) {
-        ShinyBoost shinyBoost = MoreSparkles.INSTANCE.getActiveBoost(player);
-        if (shinyBoost == null) {
+        Map<BoostType, Boost> boostMap = PlayerBoostCache.currentBoosts(player);
+        if (boostMap == null || boostMap.isEmpty()) {
             deletePlayerBoostFile(player);
             return;
         }
 
-        File rootFolder = FabricLoader.getInstance().getConfigDir().resolve("MoreSparkles").toFile();
-        if (!rootFolder.exists())
-            rootFolder.mkdir();
-
-        File playersFolder = FabricLoader.getInstance().getConfigDir().resolve("MoreSparkles/playerdata").toFile();
-        if (!playersFolder.exists())
-            playersFolder.mkdir();
-
-        File playerFile = FabricLoader.getInstance().getConfigDir().resolve("MoreSparkles/playerdata/" + player.getUuidAsString() + ".json").toFile();
-
-        JsonObject root = new JsonObject();
-        root.addProperty("uuid", player.getUuidAsString());
-        root.addProperty("username", player.getNameForScoreboard());
-
-        JsonObject activeBoost = new JsonObject();
-        activeBoost.addProperty("multiplier", shinyBoost.multiplier);
-        activeBoost.addProperty("time_remaining", shinyBoost.timeRemaining);
-        activeBoost.addProperty("duration", shinyBoost.duration);
-        root.add("active_boost", activeBoost);
-
-        JsonArray queuedBoostsArray = new JsonArray();
-        for (ShinyBoost queuedBoost : MoreSparkles.INSTANCE.getQueuedBoosts(player)) {
-            JsonObject queuedBoostObject = new JsonObject();
-            queuedBoostObject.addProperty("multiplier", queuedBoost.multiplier);
-            queuedBoostObject.addProperty("duration", queuedBoost.duration);
-            queuedBoostsArray.add(queuedBoostObject);
+        Map<BoostType, Queue<Boost>> queuedBoosts = PlayerBoostQueueCache.currentQueuedBoosts(player);
+        Map<BoostType, LinkedList<Boost>> listQueuedBoost = Maps.newConcurrentMap();
+        if (queuedBoosts != null && !queuedBoosts.isEmpty()) {
+            queuedBoosts.forEach((boostType, queue) -> {
+                if (!queue.isEmpty()) {
+                    if (!listQueuedBoost.containsKey(boostType)) {
+                        listQueuedBoost.put(boostType, new LinkedList<>());
+                    }
+                    queue.forEach(boost -> listQueuedBoost.get(boostType).add(boost));
+                }
+            });
         }
-        root.add("queued_boosts", queuedBoostsArray);
+        PlayerData playerData = new PlayerData(new HashMap<>(boostMap), listQueuedBoost);
 
-        try {
-            playerFile.delete();
-            playerFile.createNewFile();
-            Gson gson = new GsonBuilder().setPrettyPrinting().disableHtmlEscaping().create();
-            Writer writer = new FileWriter(playerFile);
-            gson.toJson(root, writer);
-            writer.close();
-        } catch (IOException e) {
-            MoreSparkles.LOGGER.error("[MoreSparkles] Failed To Save Player Data File: {}", playerFile.getName());
-            MoreSparkles.LOGGER.error(e.getMessage());
-        }
-    }
-
-    public static void savePlayerBoostData(ShinyBoost shinyBoost) {
-        if (shinyBoost.playerUUID == null) return;
-
-        File rootFolder = FabricLoader.getInstance().getConfigDir().resolve("MoreSparkles").toFile();
-        if (!rootFolder.exists())
-            rootFolder.mkdir();
-
-        File playersFolder = FabricLoader.getInstance().getConfigDir().resolve("MoreSparkles/playerdata").toFile();
-        if (!playersFolder.exists())
-            playersFolder.mkdir();
-
-        File playerFile = FabricLoader.getInstance().getConfigDir().resolve("MoreSparkles/playerdata/" + shinyBoost.playerUUID + ".json").toFile();
-
-        JsonObject root = new JsonObject();
-        ServerPlayerEntity player = MoreSparkles.INSTANCE.getServer().getPlayerManager().getPlayer(shinyBoost.playerUUID);
-        root.addProperty("uuid", shinyBoost.playerUUID.toString());
-        if (player != null) {
-            root.addProperty("username", player.getNameForScoreboard());
-        }
-
-        JsonObject activeBoost = new JsonObject();
-        activeBoost.addProperty("multiplier", shinyBoost.multiplier);
-        activeBoost.addProperty("time_remaining", shinyBoost.timeRemaining);
-        activeBoost.addProperty("duration", shinyBoost.duration);
-        root.add("active_boost", activeBoost);
-
-        JsonArray queuedBoostsArray = new JsonArray();
-        for (ShinyBoost queuedBoost : MoreSparkles.INSTANCE.getQueuedBoosts(shinyBoost.playerUUID)) {
-            JsonObject queuedBoostObject = new JsonObject();
-            queuedBoostObject.addProperty("multiplier", queuedBoost.multiplier);
-            queuedBoostObject.addProperty("duration", queuedBoost.duration);
-            queuedBoostsArray.add(queuedBoostObject);
-        }
-        root.add("queued_boosts", queuedBoostsArray);
-
-        try {
-            playerFile.delete();
-            playerFile.createNewFile();
-            Gson gson = new GsonBuilder().setPrettyPrinting().disableHtmlEscaping().create();
-            Writer writer = new FileWriter(playerFile);
-            gson.toJson(root, writer);
-            writer.close();
-        } catch (IOException e) {
-            MoreSparkles.LOGGER.error("[MoreSparkles] Failed To Save Player Data File: {}", playerFile.getName());
-            MoreSparkles.LOGGER.error(e.getMessage());
-        }
+        File playerFile = new File(ConfigManager.configDir, "players/" + player.getUuidAsString() + ".json");
+        playerFile.delete();
+        ConfigManager.writeFile(playerFile, gson.toJson(playerData));
     }
 
     public static void deletePlayerBoostFile(ServerPlayerEntity player) {
-        File rootFolder = FabricLoader.getInstance().getConfigDir().resolve("MoreSparkles").toFile();
-        if (!rootFolder.exists()) return;
-
-        File playersFolder = FabricLoader.getInstance().getConfigDir().resolve("MoreSparkles/playerdata").toFile();
-        if (!playersFolder.exists()) return;
-
-        File playerFile = FabricLoader.getInstance().getConfigDir().resolve("MoreSparkles/playerdata/" + player.getUuidAsString() + ".json").toFile();
-        if (playerFile.exists()) playerFile.delete();
+        File playerFile = new File(ConfigManager.configDir, "players/" + player.getUuidAsString() + ".json");
+        playerFile.delete();
     }
 }
