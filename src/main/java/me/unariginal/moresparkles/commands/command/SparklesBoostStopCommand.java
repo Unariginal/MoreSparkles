@@ -62,6 +62,7 @@ public class SparklesBoostStopCommand {
 
                     Boost nextBoost = PlayerBoostQueueCache.poll(player, boostType);
                     if (nextBoost != null) {
+                        nextBoost.activate();
                         PlayerBoostCache.add(player, nextBoost);
                         if (nextBoost.bossBar != null) player.showBossBar(nextBoost.bossBar);
                     }

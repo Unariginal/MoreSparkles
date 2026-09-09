@@ -12,6 +12,7 @@ import java.time.DateTimeException;
 import java.time.Duration;
 import java.time.LocalDateTime;
 import java.util.List;
+import java.util.Map;
 
 import static me.unariginal.moresparkles.configs.ConfigManager.MESSAGES;
 
@@ -30,22 +31,28 @@ public class Boost {
     public String boostPauseTime = null;
 
     public Boost(boolean isGlobal, BoostType boostType, float multiplier, int duration) {
-        this.isGlobal = isGlobal;
         this.boostType = boostType;
         this.multiplier = multiplier;
         this.boostStartTime = LocalDateTime.now().toString();
         this.boostExpirationTime = LocalDateTime.now().plusSeconds(duration).toString();
         this.totalSeconds = Duration.between(LocalDateTime.parse(boostStartTime), LocalDateTime.parse(boostExpirationTime)).toSeconds();
 
-        if (isGlobal) {
-            List<MessagesConfig.BossbarSettings> possibleBossbars = MESSAGES.globalBoostBossbars.values().stream().filter(settings -> settings.boostType == boostType).toList();
-            if (!possibleBossbars.isEmpty()) bossbarSettings = possibleBossbars.getFirst();
-        } else {
-            List<MessagesConfig.BossbarSettings> possibleBossbars = MESSAGES.playerBoostBossbars.values().stream().filter(settings -> settings.boostType == boostType).toList();
-            if (!possibleBossbars.isEmpty()) bossbarSettings = possibleBossbars.getFirst();
+        setupBossbar(isGlobal);
+    }
+
+    public void setupBossbar(boolean isGlobal) {
+        this.isGlobal = isGlobal;
+        if (totalSeconds <= 0) {
+            totalSeconds = Duration.between(LocalDateTime.parse(boostStartTime), LocalDateTime.parse(boostExpirationTime)).toSeconds();
         }
 
-        this.bossBar = BossBar.bossBar(getBossBarText(), 1F, bossbarSettings.barColor, bossbarSettings.barOverlay);
+        Map<String, MessagesConfig.BossbarSettings> bossbarPool = isGlobal ? MESSAGES.globalBoostBossbars : MESSAGES.playerBoostBossbars;
+        List<MessagesConfig.BossbarSettings> possibleBossbars = bossbarPool.values().stream().filter(settings -> settings.boostType == boostType).toList();
+        if (!possibleBossbars.isEmpty()) bossbarSettings = possibleBossbars.getFirst();
+
+        if (bossbarSettings != null) {
+            bossBar = BossBar.bossBar(getBossBarText(), 1F, bossbarSettings.barColor, bossbarSettings.barOverlay);
+        }
     }
 
     public void pause() {
@@ -84,7 +91,7 @@ public class Boost {
         if (total > 1F) total = 1F;
 
         try {
-            bossBar.progress(total);
+            if (boostPauseTime == null) bossBar.progress(total);
             bossBar.name(getBossBarText());
         } catch (IllegalArgumentException e) {
             MoreSparkles.LOGGER.error("[MoreSparkles] Failed to update bossbar", e);

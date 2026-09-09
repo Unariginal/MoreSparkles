@@ -27,9 +27,9 @@ public class CylinderArea extends BoostArea {
                     double angle = new Random().nextDouble(0, 2 * Math.PI);
                     double distance = new Random().nextDouble(0, shape.radius);
 
-                    double cX = distance * Math.cos(angle);
+                    double cX = shape.centerX + distance * Math.cos(angle);
                     double cY = new Random().nextDouble(shape.yMin, shape.yMax);
-                    double cZ = distance * Math.sin(angle);
+                    double cZ = shape.centerZ + distance * Math.sin(angle);
                     getWorld(shape).spawnParticles(simpleParticleType, cX, cY, cZ, particles.count, 1, 1, 1, particles.speed);
                 }
             }

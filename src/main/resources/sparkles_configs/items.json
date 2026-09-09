@@ -1,9 +1,11 @@
 {
-  "shiny_charm": {
-    "boost_type": "shiny",
-    "multiplier": 2.0,
-    "lore": [
-      "<gray>Having one of these mysterious shining charms makes it more likely you'll encounter Shiny Pokémon in the wild."
-    ]
+  "charms": {
+    "shiny_charm": {
+      "boost_type": "shiny",
+      "multiplier": 2.0,
+      "lore": [
+        "<gray>Having one of these mysterious shining charms makes it more likely you'll encounter Shiny Pokémon in the wild."
+      ]
+    }
   }
 }

@@ -10,5 +10,6 @@ public enum BoostType {
     EGG,
     HATCH,
     CATCH,
-    MARK
+    MARK,
+    ALPHA
 }

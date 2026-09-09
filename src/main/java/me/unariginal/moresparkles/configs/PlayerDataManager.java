@@ -2,6 +2,7 @@ package me.unariginal.moresparkles.configs;
 
 import com.google.common.collect.Maps;
 import com.google.gson.*;
+import me.unariginal.moresparkles.MoreSparkles;
 import me.unariginal.moresparkles.cache.PlayerBoostCache;
 import me.unariginal.moresparkles.cache.PlayerBoostQueueCache;
 import me.unariginal.moresparkles.data.Boost;
@@ -9,6 +10,7 @@ import me.unariginal.moresparkles.data.BoostType;
 import net.minecraft.server.network.ServerPlayerEntity;
 
 import java.io.*;
+import java.nio.file.Files;
 import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.Map;
@@ -22,10 +24,14 @@ public class PlayerDataManager {
         PlayerData playerData = ConfigManager.loadFile("/players/" + player.getUuidAsString() + ".json", PlayerData.class);
         if (playerData == null) return;
         playerData.activeBoosts.values().forEach(boost -> {
+            boost.setupBossbar(false);
             boost.resume();
             PlayerBoostCache.add(player, boost);
         });
-        playerData.queuedBoosts.values().forEach(boostList -> boostList.forEach(boost -> PlayerBoostQueueCache.queueBoost(player, boost)));
+        playerData.queuedBoosts.values().forEach(boostList -> boostList.forEach(boost -> {
+            boost.setupBossbar(false);
+            PlayerBoostQueueCache.queueBoost(player, boost);
+        }));
     }
 
     public static void savePlayerBoostData(ServerPlayerEntity player) {
@@ -51,6 +57,12 @@ public class PlayerDataManager {
 
         File playerFile = new File(ConfigManager.configDir, "players/" + player.getUuidAsString() + ".json");
         playerFile.delete();
+        try {
+            Files.createDirectories(playerFile.getParentFile().toPath());
+            Files.createFile(playerFile.toPath());
+        } catch (IOException e) {
+            MoreSparkles.LOGGER.error("[MoreSparkles] Failed to create player data file", e);
+        }
         ConfigManager.writeFile(playerFile, gson.toJson(playerData));
     }
 

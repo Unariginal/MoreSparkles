@@ -41,7 +41,7 @@ public class MoreSparkles implements ModInitializer {
     @Override
     public void onInitialize() {
         INSTANCE = this;
-
+        load();
         CommandRegistrationCallback.EVENT.register(SparkleCommands::register);
 
         if (isPolymerEnabled()) {
@@ -53,15 +53,16 @@ public class MoreSparkles implements ModInitializer {
             LOGGER.warn("[MoreSparkles] Polymer is not found; Items will not be loaded!");
         }
 
-        new ScheduledTimerHandler();
-
         ServerLifecycleEvents.SERVER_STARTING.register(server -> {
             this.server = server;
             this.audiences = FabricServerAudiences.of(server);
-            reload(false);
         });
 
-        ServerLifecycleEvents.SERVER_STARTED.register(server -> EventManager.register());
+        ServerLifecycleEvents.SERVER_STARTED.register(server -> {
+            BoostManager.loadFromConfig();
+            new ScheduledTimerHandler();
+            EventManager.register();
+        });
 
         ServerTickEvents.END_SERVER_TICK.register(server -> TickManager.tickParticles());
 
@@ -71,6 +72,11 @@ public class MoreSparkles implements ModInitializer {
             PlayerDataManager.savePlayerBoostData(player);
             PlayerBoostCache.removeAll(player);
             PlayerBoostQueueCache.remove(player);
+            if (BoostManager.globalBoosts != null) {
+                for (Boost boost : BoostManager.globalBoosts.values()) {
+                    if (boost.bossBar != null) player.hideBossBar(boost.bossBar);
+                }
+            }
         });
 
         ServerPlayConnectionEvents.JOIN.register((serverPlayNetworkHandler, sender, minecraftServer) -> {
@@ -85,6 +91,8 @@ public class MoreSparkles implements ModInitializer {
 
             if (BoostManager.globalBoosts != null) {
                 BoostManager.globalBoosts.values().forEach(boost -> {
+                    Boost playerBoost = PlayerBoostCache.currentBoost(player, boost.boostType);
+                    if (playerBoost != null) playerBoost.pause();
                     if (boost.bossBar != null) player.showBossBar(boost.bossBar);
                 });
             }
@@ -119,11 +127,8 @@ public class MoreSparkles implements ModInitializer {
         LOGGER.error("[MoreSparkles] {}", error);
     }
 
-    public void reload(boolean fromCommand) {
-        if (fromCommand) {
-            Config.saveGlobalBoostData();
-        }
-
+    public void reload() {
+        Config.saveGlobalBoostData();
         load();
     }
 }

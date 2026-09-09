@@ -18,7 +18,7 @@ public class SparklesReloadCommand {
     }
 
     private static int execute(CommandContext<ServerCommandSource> ctx) {
-        MoreSparkles.INSTANCE.reload(true);
+        MoreSparkles.INSTANCE.reload();
         ctx.getSource().sendMessage(TextUtils.deserialize(MESSAGES.messages.commandReload));
         return 1;
     }
