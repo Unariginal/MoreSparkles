@@ -1,5 +1,6 @@
 package me.unariginal.moresparkles.configs;
 
+import com.cobblemon.mod.common.pokemon.Pokemon;
 import com.google.common.collect.Maps;
 import me.unariginal.moresparkles.data.Boost;
 import me.unariginal.moresparkles.data.BoostType;
@@ -8,6 +9,7 @@ import org.jetbrains.annotations.Nullable;
 
 import java.io.*;
 import java.util.LinkedList;
+import java.util.List;
 import java.util.Map;
 import java.util.Queue;
 
@@ -21,10 +23,24 @@ public class Config {
     public boolean pausePlayerBoostsOnDisconnect;
     public boolean pausePlayerBoostsOnShutdown;
     public boolean pauseGlobalBoostsOnShutdown;
+    public boolean experienceBoosterIgnoresCandy;
+    public boolean experienceBoosterIgnoresSidemodSource;
+    public boolean evBoosterIgnoresVitamins;
+    public boolean evBoosterIgnoresSidemodSource;
+    public float hiddenAbilityBoosterBaseChance;
+    @Nullable
+    public Map<BoostType, List<String>> persistentDataKeyBlacklist;
     @Nullable
     public Map<BoostType, Boost> activeGlobalBoosts;
     @Nullable
     public Map<BoostType, LinkedList<Boost>> queuedGlobalBoosts;
+
+    public static boolean canBeBoosted(Pokemon pokemon, BoostType boostType) {
+        if (CONFIG.persistentDataKeyBlacklist != null && CONFIG.persistentDataKeyBlacklist.containsKey(boostType)) {
+            return CONFIG.persistentDataKeyBlacklist.get(boostType).stream().noneMatch(key -> pokemon.getPersistentData().contains(key));
+        }
+        return true;
+    }
 
     public static void saveGlobalBoostData() {
         CONFIG.activeGlobalBoosts = BoostManager.globalBoosts;

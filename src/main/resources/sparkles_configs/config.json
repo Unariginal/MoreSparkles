@@ -5,6 +5,14 @@
   "pause_player_boosts_on_disconnect": true,
   "pause_player_boosts_on_shutdown": true,
   "pause_global_boosts_on_shutdown": true,
+  "experience_booster_ignores_candy": true,
+  "experience_booster_ignores_sidemod_source": true,
+  "ev_booster_ignores_vitamins": true,
+  "ev_booster_ignores_sidemod_source": true,
+  "hidden_ability_booster_base_chance": 0.05,
+  "persistent_data_key_blacklist": {
+    "IV": ["raid_data"]
+  },
   "active_global_boosts": null,
   "queued_global_boosts": null
 }

@@ -17,19 +17,15 @@ import net.minecraft.util.Rarity;
 import java.util.LinkedHashMap;
 import java.util.Map;
 
-import static me.unariginal.moresparkles.MoreSparkles.logError;
 import static me.unariginal.moresparkles.configs.ConfigManager.ITEMS_CONFIG;
 
 public class CharmItemsGroup {
     public static LinkedHashMap<String, CharmItem> charmItems = new LinkedHashMap<>();
 
     public static void registerItemGroup() {
-        logError("Registering item group");
         if (ITEMS_CONFIG.charms == null) return;
-        logError("Charms is not null");
         for (Map.Entry<String, ItemsConfig.CharmData> charmEntry : ITEMS_CONFIG.charms.entrySet()) {
             String id = charmEntry.getKey();
-            logError("ID: " + id);
             charmItems.put(id, Registry.register(
                     Registries.ITEM,
                     Identifier.of(MoreSparkles.MOD_ID, id),
@@ -42,8 +38,6 @@ public class CharmItemsGroup {
                     )
             ));
         }
-
-        logError("Charm Items Size: " + charmItems.size());
 
         Item icon = Items.GLOWSTONE_DUST;
         if (!charmItems.isEmpty() && charmItems.firstEntry() != null) {

@@ -1,15 +1,16 @@
 package me.unariginal.moresparkles.data;
 
 public enum BoostType {
-    SHINY,
-    EXPERIENCE,
-    HIDDEN_ABILITY,
-    EV,
-    IV,
-    BERRY,
+    SHINY, // Done
+    EXPERIENCE, // Done
+    HIDDEN_ABILITY, // Done
+    EV, // Done
+    IV, // Done
+    BERRY, // Done
     EGG,
     HATCH,
-    CATCH,
-    MARK,
-    ALPHA
+    CATCH_RATE, // Done
+    MARK, // Done
+    ALPHA, // Done
+    SPAWN_BUCKET // Done
 }

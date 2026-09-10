@@ -1,6 +1,9 @@
 package me.unariginal.moresparkles;
 
+import com.cobblemon.mod.common.api.spawning.influence.SpawningInfluence;
+import com.cobblemon.mod.common.api.spawning.spawner.PlayerSpawnerFactory;
 import eu.pb4.polymer.resourcepack.api.PolymerResourcePackUtils;
+import kotlin.jvm.functions.Function1;
 import me.unariginal.moresparkles.cache.PlayerBoostCache;
 import me.unariginal.moresparkles.cache.PlayerBoostQueueCache;
 import me.unariginal.moresparkles.commands.SparkleCommands;
@@ -8,10 +11,9 @@ import me.unariginal.moresparkles.configs.*;
 import me.unariginal.moresparkles.data.Boost;
 import me.unariginal.moresparkles.data.BoostType;
 import me.unariginal.moresparkles.items.CharmItemsGroup;
-import me.unariginal.moresparkles.managers.BoostManager;
-import me.unariginal.moresparkles.managers.EventManager;
-import me.unariginal.moresparkles.managers.ScheduledTimerHandler;
-import me.unariginal.moresparkles.managers.TickManager;
+import me.unariginal.moresparkles.managers.*;
+import me.unariginal.moresparkles.spawning.influences.AlphaSpawningInfluence;
+import me.unariginal.moresparkles.spawning.influences.SpawnBucketInfluence;
 import me.unariginal.moresparkles.utils.Threading;
 import net.fabricmc.api.ModInitializer;
 import net.fabricmc.fabric.api.command.v2.CommandRegistrationCallback;
@@ -25,6 +27,8 @@ import net.minecraft.server.network.ServerPlayerEntity;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Map;
 
 import static me.unariginal.moresparkles.configs.ConfigManager.*;
@@ -62,6 +66,11 @@ public class MoreSparkles implements ModInitializer {
             BoostManager.loadFromConfig();
             new ScheduledTimerHandler();
             EventManager.register();
+
+            List<Function1<ServerPlayerEntity, SpawningInfluence>> builders = new ArrayList<>(PlayerSpawnerFactory.INSTANCE.getInfluenceBuilders());
+            builders.add(AlphaSpawningInfluence::new);
+            builders.add(SpawnBucketInfluence::new);
+            PlayerSpawnerFactory.INSTANCE.setInfluenceBuilders(builders);
         });
 
         ServerTickEvents.END_SERVER_TICK.register(server -> TickManager.tickParticles());
