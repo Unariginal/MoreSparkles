@@ -56,12 +56,13 @@ public class PlayerDataManager {
         PlayerData playerData = new PlayerData(new HashMap<>(boostMap), listQueuedBoost);
 
         File playerFile = new File(ConfigManager.configDir, "players/" + player.getUuidAsString() + ".json");
-        playerFile.delete();
-        try {
-            Files.createDirectories(playerFile.getParentFile().toPath());
-            Files.createFile(playerFile.toPath());
-        } catch (IOException e) {
-            MoreSparkles.LOGGER.error("[MoreSparkles] Failed to create player data file", e);
+        if (!playerFile.exists()) {
+            try {
+                Files.createDirectories(playerFile.getParentFile().toPath());
+                Files.createFile(playerFile.toPath());
+            } catch (IOException e) {
+                MoreSparkles.LOGGER.error("[MoreSparkles] Failed to create player data file", e);
+            }
         }
         ConfigManager.writeFile(playerFile, gson.toJson(playerData));
     }

@@ -34,6 +34,14 @@ public class Config {
     public Map<BoostType, Boost> activeGlobalBoosts;
     @Nullable
     public Map<BoostType, LinkedList<Boost>> queuedGlobalBoosts;
+    @Nullable
+    public WebhookConnectionSettings webhookSettings;
+
+    public static class WebhookConnectionSettings {
+        public boolean enabled;
+        public String url;
+        public int updateRateSeconds;
+    }
 
     public static boolean canBeBoosted(Pokemon pokemon, BoostType boostType) {
         if (CONFIG.persistentDataKeyBlacklist != null && CONFIG.persistentDataKeyBlacklist.containsKey(boostType)) {
@@ -64,7 +72,6 @@ public class Config {
         CONFIG.queuedGlobalBoosts = listQueuedBoost;
 
         File configFile = new File(ConfigManager.configDir, "config.json");
-        configFile.delete();
         ConfigManager.writeFile(configFile, gson.toJson(CONFIG));
     }
 }

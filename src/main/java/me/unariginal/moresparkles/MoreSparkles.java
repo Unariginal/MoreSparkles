@@ -63,6 +63,7 @@ public class MoreSparkles implements ModInitializer {
         });
 
         ServerLifecycleEvents.SERVER_STARTED.register(server -> {
+            WebhookManager.connectWebhook();
             BoostManager.loadFromConfig();
             new ScheduledTimerHandler();
             EventManager.register();
@@ -118,6 +119,7 @@ public class MoreSparkles implements ModInitializer {
             }
             Config.saveGlobalBoostData();
             Threading.shutdown();
+            if (WebhookManager.webhook != null) WebhookManager.webhook.close();
         });
     }
 
@@ -137,7 +139,8 @@ public class MoreSparkles implements ModInitializer {
     }
 
     public void reload() {
-        Config.saveGlobalBoostData();
         load();
+        WebhookManager.connectWebhook();
+        Config.saveGlobalBoostData();
     }
 }

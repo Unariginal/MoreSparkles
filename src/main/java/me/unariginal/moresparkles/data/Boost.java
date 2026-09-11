@@ -46,9 +46,11 @@ public class Boost {
             totalSeconds = Duration.between(LocalDateTime.parse(boostStartTime), LocalDateTime.parse(boostExpirationTime)).toSeconds();
         }
 
-        Map<String, MessagesConfig.BossbarSettings> bossbarPool = isGlobal ? MESSAGES.globalBoostBossbars : MESSAGES.playerBoostBossbars;
-        List<MessagesConfig.BossbarSettings> possibleBossbars = bossbarPool.values().stream().filter(settings -> settings.boostType == boostType).toList();
-        if (!possibleBossbars.isEmpty()) bossbarSettings = possibleBossbars.getFirst();
+        Map<BoostType, MessagesConfig.BossbarSettings> bossbarPool = isGlobal ? MESSAGES.globalBoostBossbars : MESSAGES.playerBoostBossbars;
+        if (bossbarPool != null) {
+            List<Map.Entry<BoostType, MessagesConfig.BossbarSettings>> possibleBossbars = bossbarPool.entrySet().stream().filter(e -> e.getKey() == boostType).toList();
+            if (!possibleBossbars.isEmpty()) bossbarSettings = possibleBossbars.getFirst().getValue();
+        }
 
         if (bossbarSettings != null) {
             bossBar = BossBar.bossBar(getBossBarText(), 1F, bossbarSettings.barColor, bossbarSettings.barOverlay);

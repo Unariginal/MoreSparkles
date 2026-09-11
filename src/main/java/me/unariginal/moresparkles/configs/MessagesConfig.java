@@ -2,14 +2,20 @@ package me.unariginal.moresparkles.configs;
 
 import me.unariginal.moresparkles.data.BoostType;
 import net.kyori.adventure.bossbar.BossBar;
+import org.jetbrains.annotations.Nullable;
 
+import java.util.List;
 import java.util.Map;
 
 public class MessagesConfig {
     public String prefix = "<gray>[<light_purple>MoreSparkles<gray>]";
     public Messages messages;
-    public Map<String, BossbarSettings> globalBoostBossbars;
-    public Map<String, BossbarSettings> playerBoostBossbars;
+    @Nullable
+    public Map<BoostType, BossbarSettings> globalBoostBossbars;
+    @Nullable
+    public Map<BoostType, BossbarSettings> playerBoostBossbars;
+    @Nullable
+    public Map<BoostType, WebhookContentSettings> boostWebhooks;
 
     public static class Messages {
         public String commandReload = "%prefix% <green>Reloaded!";
@@ -31,10 +37,26 @@ public class MessagesConfig {
     }
 
     public static class BossbarSettings {
-        public BoostType boostType;
         public BossBar.Color barColor = BossBar.Color.PINK;
         public BossBar.Overlay barOverlay = BossBar.Overlay.PROGRESS;
         public String barText = "<gray>%boost_multiplier%x %boost_type% Boost | %boost_time_remaining% Remaining";
         public String barTextPaused = "<gray>%boost_multiplier%x %boost_type% Boost | PAUSED";
+    }
+
+    public static class WebhookContentSettings {
+        public String username;
+        public String avatarUrl;
+        public String message;
+        public String title;
+        public String color;
+        public String thumbnailUrl;
+        @Nullable
+        public List<EmbedFieldSettings> fields;
+
+        public static class EmbedFieldSettings {
+            public boolean inline;
+            public String name;
+            public String value;
+        }
     }
 }

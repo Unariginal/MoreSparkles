@@ -19,8 +19,7 @@
     "not_in_area": "%prefix% <red>You're not in an area!"
   },
   "global_boost_bossbars": {
-    "global_shiny": {
-      "boost_type": "shiny",
+    "SHINY": {
       "bar_color": "pink",
       "bar_overlay": "progress",
       "bar_text": "<gray>Global %boost_multiplier%x Shiny Boost | %boost_time_remaining% Remaining",
@@ -28,12 +27,28 @@
     }
   },
   "player_boost_bossbars": {
-    "player_shiny": {
-      "boost_type": "shiny",
+    "SHINY": {
       "bar_color": "pink",
       "bar_overlay": "progress",
       "bar_text": "<gray>Personal %boost_multiplier%x Shiny Boost | %boost_time_remaining% Remaining",
       "bar_text_paused": "<gray>Personal %boost_multiplier%x Shiny Boost | PAUSED"
+    }
+  },
+  "boost_webhooks": {
+    "SHINY": {
+      "username": "Shiny Boost Username",
+      "avatar_url": "https://www.pngall.com/wp-content/uploads/17/Brilliant-Twinkling-Sparkle-Glow-PNG-thumb.png",
+      "message": "A Shiny Boost Is Starting!",
+      "title": "Shiny Boost Title",
+      "color": "#00FFFF",
+      "thumbnail_url": "https://archives.bulbagarden.net/media/upload/4/4d/Bag_Shiny_Charm_SV_Sprite.png",
+      "fields": [
+        {
+          "inline": false,
+          "name": "Shiny Field",
+          "value": "Shiny Value"
+        }
+      ]
     }
   }
 }

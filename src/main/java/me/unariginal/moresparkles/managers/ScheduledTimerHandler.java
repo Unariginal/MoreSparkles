@@ -10,12 +10,18 @@ import me.unariginal.moresparkles.data.BoostType;
 import me.unariginal.moresparkles.utils.Threading;
 import net.minecraft.server.network.ServerPlayerEntity;
 
+import java.util.HashMap;
 import java.util.Map;
 import java.util.Queue;
 import java.util.concurrent.ScheduledFuture;
 
+import static me.unariginal.moresparkles.configs.ConfigManager.CONFIG;
+import static me.unariginal.moresparkles.configs.ConfigManager.MESSAGES;
+
 public class ScheduledTimerHandler {
     public ScheduledFuture<?> schedule;
+    private int webhookUpdateTracker = 0;
+    private Map<BoostType, Long> webhookTracker = new HashMap<>();
 
     public ScheduledTimerHandler() {
         schedule = Threading.runDelayedTaskAsyncTimer(this::updateBoosts, 1L, 1L);
@@ -26,7 +32,7 @@ public class ScheduledTimerHandler {
             try {
                 updateBoostsOnServerThread();
             } catch (Throwable throwable) {
-                MoreSparkles.LOGGER.error("[MoreSparkles] Error updating boosts and boost bossbars.", throwable);
+                MoreSparkles.LOGGER.error("[MoreSparkles] Error updating boosts and boost displays.", throwable);
             }
         });
     }
@@ -61,6 +67,12 @@ public class ScheduledTimerHandler {
                     if (boost.bossBar != null) MoreSparkles.INSTANCE.audiences.all().hideBossBar(boost.bossBar);
                     BoostManager.globalBoosts.remove(boost.boostType);
 
+                    Long webhookId = webhookTracker.get(boost.boostType);
+                    if (webhookId != null && webhookId != -1) {
+                        WebhookManager.deleteWebhook(webhookId);
+                    }
+                    webhookTracker.remove(boost.boostType);
+
                     Queue<Boost> queue = BoostManager.queuedGlobalBoosts != null ? BoostManager.queuedGlobalBoosts.get(boost.boostType) : null;
                     Boost nextBoost = queue != null ? queue.poll() : null;
                     if (nextBoost != null) {
@@ -77,6 +89,27 @@ public class ScheduledTimerHandler {
 
                 boost.updateBossbar();
             }
+        }
+
+        if (CONFIG.webhookSettings != null && CONFIG.webhookSettings.enabled) {
+            if (webhookUpdateTracker <= 0) {
+                webhookUpdateTracker = CONFIG.webhookSettings.updateRateSeconds;
+                if (BoostManager.globalBoosts != null) {
+                    for (Boost boost : BoostManager.globalBoosts.values()) {
+                        if (MESSAGES.boostWebhooks == null || MESSAGES.boostWebhooks.get(boost.boostType) == null) continue;
+
+                        Long id = webhookTracker.get(boost.boostType);
+                        if (id != null && id != -1) {
+                            WebhookManager.editWebhookEmbed(id, boost)
+                                    .thenAccept(webhookId -> MoreSparkles.INSTANCE.server.execute(() -> webhookTracker.put(boost.boostType, webhookId)));
+                        } else {
+                            WebhookManager.sendWebhookEmbed(boost)
+                                    .thenAccept(webhookId -> MoreSparkles.INSTANCE.server.execute(() -> webhookTracker.put(boost.boostType, webhookId)));
+                        }
+                    }
+                }
+            }
+            webhookUpdateTracker--;
         }
     }
 }

@@ -13,6 +13,11 @@
   "persistent_data_key_blacklist": {
     "IV": ["raid_data"]
   },
+  "webhook_settings": {
+    "enabled": false,
+    "url": "https://discord.com/api/webhooks/your_webhook_url",
+    "update_rate_seconds": 10
+  },
   "active_global_boosts": null,
   "queued_global_boosts": null
 }

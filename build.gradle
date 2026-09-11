@@ -46,12 +46,14 @@ dependencies {
     modImplementation include("net.kyori:adventure-platform-fabric:5.14.2")
 
     modImplementation include("eu.pb4:polymer-core:0.9.18+1.21.1")
-//    modImplementation include("eu.pb4:polymer-blocks:0.9.18+1.21.1")
     modImplementation include("eu.pb4:polymer-resource-pack:0.9.18+1.21.1")
 
     modImplementation "com.cobblemon:fabric:${project.cobblemon_version}"
 
-    implementation("club.minnced:discord-webhooks:0.8.4")
+    implementation include("club.minnced:discord-webhooks:0.8.4")
+    implementation include("org.json:json:20230618")
+    implementation include("com.squareup.okhttp3:okhttp:4.10.0")
+    implementation include("com.squareup.okio:okio:3.0.0")
 }
 
 processResources {
