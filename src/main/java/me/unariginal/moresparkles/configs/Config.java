@@ -31,16 +31,17 @@ public class Config {
     @Nullable
     public Map<BoostType, List<String>> persistentDataKeyBlacklist;
     @Nullable
+    public WebhookConnectionSettings webhookSettings;
+    @Nullable
     public Map<BoostType, Boost> activeGlobalBoosts;
     @Nullable
     public Map<BoostType, LinkedList<Boost>> queuedGlobalBoosts;
-    @Nullable
-    public WebhookConnectionSettings webhookSettings;
 
     public static class WebhookConnectionSettings {
         public boolean enabled;
         public String url;
         public int updateRateSeconds;
+        public boolean deleteWhenBoostEnds;
     }
 
     public static boolean canBeBoosted(Pokemon pokemon, BoostType boostType) {

@@ -21,7 +21,7 @@ import static me.unariginal.moresparkles.configs.ConfigManager.MESSAGES;
 public class ScheduledTimerHandler {
     public ScheduledFuture<?> schedule;
     private int webhookUpdateTracker = 0;
-    private Map<BoostType, Long> webhookTracker = new HashMap<>();
+    private final Map<BoostType, Long> webhookTracker = new HashMap<>();
 
     public ScheduledTimerHandler() {
         schedule = Threading.runDelayedTaskAsyncTimer(this::updateBoosts, 1L, 1L);
@@ -68,7 +68,7 @@ public class ScheduledTimerHandler {
                     BoostManager.globalBoosts.remove(boost.boostType);
 
                     Long webhookId = webhookTracker.get(boost.boostType);
-                    if (webhookId != null && webhookId != -1) {
+                    if (CONFIG.webhookSettings != null && CONFIG.webhookSettings.deleteWhenBoostEnds && webhookId != null && webhookId != -1) {
                         WebhookManager.deleteWebhook(webhookId);
                     }
                     webhookTracker.remove(boost.boostType);
@@ -101,10 +101,16 @@ public class ScheduledTimerHandler {
                         Long id = webhookTracker.get(boost.boostType);
                         if (id != null && id != -1) {
                             WebhookManager.editWebhookEmbed(id, boost)
-                                    .thenAccept(webhookId -> MoreSparkles.INSTANCE.server.execute(() -> webhookTracker.put(boost.boostType, webhookId)));
+                                    .thenAccept(webhookId -> {
+                                        if (webhookId == null) return;
+                                        MoreSparkles.INSTANCE.server.execute(() -> webhookTracker.put(boost.boostType, webhookId));
+                                    });
                         } else {
                             WebhookManager.sendWebhookEmbed(boost)
-                                    .thenAccept(webhookId -> MoreSparkles.INSTANCE.server.execute(() -> webhookTracker.put(boost.boostType, webhookId)));
+                                    .thenAccept(webhookId -> {
+                                        if (webhookId == null) return;
+                                        MoreSparkles.INSTANCE.server.execute(() -> webhookTracker.put(boost.boostType, webhookId));
+                                    });
                         }
                     }
                 }

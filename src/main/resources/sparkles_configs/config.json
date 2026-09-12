@@ -16,7 +16,8 @@
   "webhook_settings": {
     "enabled": false,
     "url": "https://discord.com/api/webhooks/your_webhook_url",
-    "update_rate_seconds": 10
+    "update_rate_seconds": 30,
+    "delete_when_boost_ends": true
   },
   "active_global_boosts": null,
   "queued_global_boosts": null

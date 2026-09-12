@@ -9,7 +9,7 @@ import java.util.List;
 public class BoostType implements BoostPlaceholder {
     @Override
     public GenericResult handle(Boost boost, List<String> args) {
-        return GenericResult.valid(boost.boostType.toString());
+        return GenericResult.valid(boost.boostType.getDisplayName());
     }
 
     @Override

@@ -22,31 +22,388 @@
     "SHINY": {
       "bar_color": "pink",
       "bar_overlay": "progress",
-      "bar_text": "<gray>Global %boost_multiplier%x Shiny Boost | %boost_time_remaining% Remaining",
-      "bar_text_paused": "<gray>Global %boost_multiplier%x Shiny Boost | PAUSED"
+      "bar_text": "<gray>「</gray><aqua>🌐</aqua><gray>」</gray><#FF66C4><bold>✦ %boost_type% Boost</bold></#FF66C4> <dark_gray>•</dark_gray> <gold>%boost_multiplier%x</gold> <dark_gray>•</dark_gray> <gray>%boost_time_remaining% left</gray>",
+      "bar_text_paused": "<gray>「</gray><aqua>🌐</aqua><gray>」</gray><#FF66C4><bold>✦ %boost_type% Boost</bold></#FF66C4> <dark_gray>•</dark_gray> <gold>%boost_multiplier%x</gold> <dark_gray>•</dark_gray> <red><bold>PAUSED</bold></red>"
+    },
+    "EXPERIENCE": {
+      "bar_color": "green",
+      "bar_overlay": "progress",
+      "bar_text": "<gray>「</gray><aqua>🌐</aqua><gray>」</gray><#2ECC71><bold>✦ %boost_type% Boost</bold></#2ECC71> <dark_gray>•</dark_gray> <gold>%boost_multiplier%x</gold> <dark_gray>•</dark_gray> <gray>%boost_time_remaining% left</gray>",
+      "bar_text_paused": "<gray>「</gray><aqua>🌐</aqua><gray>」</gray><#2ECC71><bold>✦ %boost_type% Boost</bold></#2ECC71> <dark_gray>•</dark_gray> <gold>%boost_multiplier%x</gold> <dark_gray>•</dark_gray> <red><bold>PAUSED</bold></red>"
+    },
+    "HIDDEN_ABILITY": {
+      "bar_color": "purple",
+      "bar_overlay": "notched_6",
+      "bar_text": "<gray>「</gray><aqua>🌐</aqua><gray>」</gray><#9B59B6><bold>✦ %boost_type% Boost</bold></#9B59B6> <dark_gray>•</dark_gray> <gold>%boost_multiplier%x</gold> <dark_gray>•</dark_gray> <gray>%boost_time_remaining% left</gray>",
+      "bar_text_paused": "<gray>「</gray><aqua>🌐</aqua><gray>」</gray><#9B59B6><bold>✦ %boost_type% Boost</bold></#9B59B6> <dark_gray>•</dark_gray> <gold>%boost_multiplier%x</gold> <dark_gray>•</dark_gray> <red><bold>PAUSED</bold></red>"
+    },
+    "EV": {
+      "bar_color": "red",
+      "bar_overlay": "notched_6",
+      "bar_text": "<gray>「</gray><aqua>🌐</aqua><gray>」</gray><#E74C3C><bold>✦ %boost_type% Boost</bold></#E74C3C> <dark_gray>•</dark_gray> <gold>%boost_multiplier%x</gold> <dark_gray>•</dark_gray> <gray>%boost_time_remaining% left</gray>",
+      "bar_text_paused": "<gray>「</gray><aqua>🌐</aqua><gray>」</gray><#E74C3C><bold>✦ %boost_type% Boost</bold></#E74C3C> <dark_gray>•</dark_gray> <gold>%boost_multiplier%x</gold> <dark_gray>•</dark_gray> <red><bold>PAUSED</bold></red>"
+    },
+    "IV": {
+      "bar_color": "blue",
+      "bar_overlay": "notched_6",
+      "bar_text": "<gray>「</gray><aqua>🌐</aqua><gray>」</gray><#3498DB><bold>✦ %boost_type% Boost</bold></#3498DB> <dark_gray>•</dark_gray> <gold>%boost_multiplier%x</gold> <dark_gray>•</dark_gray> <gray>%boost_time_remaining% left</gray>",
+      "bar_text_paused": "<gray>「</gray><aqua>🌐</aqua><gray>」</gray><#3498DB><bold>✦ %boost_type% Boost</bold></#3498DB> <dark_gray>•</dark_gray> <gold>%boost_multiplier%x</gold> <dark_gray>•</dark_gray> <red><bold>PAUSED</bold></red>"
+    },
+    "BERRY": {
+      "bar_color": "yellow",
+      "bar_overlay": "progress",
+      "bar_text": "<gray>「</gray><aqua>🌐</aqua><gray>」</gray><#F1C40F><bold>✦ %boost_type% Boost</bold></#F1C40F> <dark_gray>•</dark_gray> <gold>%boost_multiplier%x</gold> <dark_gray>•</dark_gray> <gray>%boost_time_remaining% left</gray>",
+      "bar_text_paused": "<gray>「</gray><aqua>🌐</aqua><gray>」</gray><#F1C40F><bold>✦ %boost_type% Boost</bold></#F1C40F> <dark_gray>•</dark_gray> <gold>%boost_multiplier%x</gold> <dark_gray>•</dark_gray> <red><bold>PAUSED</bold></red>"
+    },
+    "EGG": {
+      "bar_color": "white",
+      "bar_overlay": "progress",
+      "bar_text": "<gray>「</gray><aqua>🌐</aqua><gray>」</gray><#ECF0F1><bold>✦ %boost_type% Boost</bold></#ECF0F1> <dark_gray>•</dark_gray> <gold>%boost_multiplier%x</gold> <dark_gray>•</dark_gray> <gray>%boost_time_remaining% left</gray>",
+      "bar_text_paused": "<gray>「</gray><aqua>🌐</aqua><gray>」</gray><#ECF0F1><bold>✦ %boost_type% Boost</bold></#ECF0F1> <dark_gray>•</dark_gray> <gold>%boost_multiplier%x</gold> <dark_gray>•</dark_gray> <red><bold>PAUSED</bold></red>"
+    },
+    "HATCH": {
+      "bar_color": "yellow",
+      "bar_overlay": "notched_10",
+      "bar_text": "<gray>「</gray><aqua>🌐</aqua><gray>」</gray><#E67E22><bold>✦ %boost_type% Boost</bold></#E67E22> <dark_gray>•</dark_gray> <gold>%boost_multiplier%x</gold> <dark_gray>•</dark_gray> <gray>%boost_time_remaining% left</gray>",
+      "bar_text_paused": "<gray>「</gray><aqua>🌐</aqua><gray>」</gray><#E67E22><bold>✦ %boost_type% Boost</bold></#E67E22> <dark_gray>•</dark_gray> <gold>%boost_multiplier%x</gold> <dark_gray>•</dark_gray> <red><bold>PAUSED</bold></red>"
+    },
+    "CATCH_RATE": {
+      "bar_color": "red",
+      "bar_overlay": "notched_10",
+      "bar_text": "<gray>「</gray><aqua>🌐</aqua><gray>」</gray><#C0392B><bold>✦ %boost_type% Boost</bold></#C0392B> <dark_gray>•</dark_gray> <gold>%boost_multiplier%x</gold> <dark_gray>•</dark_gray> <gray>%boost_time_remaining% left</gray>",
+      "bar_text_paused": "<gray>「</gray><aqua>🌐</aqua><gray>」</gray><#C0392B><bold>✦ %boost_type% Boost</bold></#C0392B> <dark_gray>•</dark_gray> <gold>%boost_multiplier%x</gold> <dark_gray>•</dark_gray> <red><bold>PAUSED</bold></red>"
+    },
+    "MARK": {
+      "bar_color": "purple",
+      "bar_overlay": "notched_20",
+      "bar_text": "<gray>「</gray><aqua>🌐</aqua><gray>」</gray><#8E44AD><bold>✦ %boost_type% Boost</bold></#8E44AD> <dark_gray>•</dark_gray> <gold>%boost_multiplier%x</gold> <dark_gray>•</dark_gray> <gray>%boost_time_remaining% left</gray>",
+      "bar_text_paused": "<gray>「</gray><aqua>🌐</aqua><gray>」</gray><#8E44AD><bold>✦ %boost_type% Boost</bold></#8E44AD> <dark_gray>•</dark_gray> <gold>%boost_multiplier%x</gold> <dark_gray>•</dark_gray> <red><bold>PAUSED</bold></red>"
+    },
+    "ALPHA": {
+      "bar_color": "red",
+      "bar_overlay": "notched_12",
+      "bar_text": "<gray>「</gray><aqua>🌐</aqua><gray>」</gray><#922B21><bold>✦ %boost_type% Boost</bold></#922B21> <dark_gray>•</dark_gray> <gold>%boost_multiplier%x</gold> <dark_gray>•</dark_gray> <gray>%boost_time_remaining% left</gray>",
+      "bar_text_paused": "<gray>「</gray><aqua>🌐</aqua><gray>」</gray><#922B21><bold>✦ %boost_type% Boost</bold></#922B21> <dark_gray>•</dark_gray> <gold>%boost_multiplier%x</gold> <dark_gray>•</dark_gray> <red><bold>PAUSED</bold></red>"
+    },
+    "SPAWN_BUCKET": {
+      "bar_color": "blue",
+      "bar_overlay": "progress",
+      "bar_text": "<gray>「</gray><aqua>🌐</aqua><gray>」</gray><#16A085><bold>✦ %boost_type% Boost</bold></#16A085> <dark_gray>•</dark_gray> <gold>%boost_multiplier%x</gold> <dark_gray>•</dark_gray> <gray>%boost_time_remaining% left</gray>",
+      "bar_text_paused": "<gray>「</gray><aqua>🌐</aqua><gray>」</gray><#16A085><bold>✦ %boost_type% Boost</bold></#16A085> <dark_gray>•</dark_gray> <gold>%boost_multiplier%x</gold> <dark_gray>•</dark_gray> <red><bold>PAUSED</bold></red>"
     }
   },
   "player_boost_bossbars": {
     "SHINY": {
       "bar_color": "pink",
       "bar_overlay": "progress",
-      "bar_text": "<gray>Personal %boost_multiplier%x Shiny Boost | %boost_time_remaining% Remaining",
-      "bar_text_paused": "<gray>Personal %boost_multiplier%x Shiny Boost | PAUSED"
+      "bar_text": "<gray>「</gray><green>👤</green><gray>」</gray><#FF66C4><bold>✦ %boost_type% Boost</bold></#FF66C4> <dark_gray>•</dark_gray> <gold>%boost_multiplier%x</gold> <dark_gray>•</dark_gray> <gray>%boost_time_remaining% left</gray>",
+      "bar_text_paused": "<gray>「</gray><green>👤</green><gray>」</gray><#FF66C4><bold>✦ %boost_type% Boost</bold></#FF66C4> <dark_gray>•</dark_gray> <gold>%boost_multiplier%x</gold> <dark_gray>•</dark_gray> <red><bold>PAUSED</bold></red>"
+    },
+    "EXPERIENCE": {
+      "bar_color": "green",
+      "bar_overlay": "progress",
+      "bar_text": "<gray>「</gray><green>👤</green><gray>」</gray><#2ECC71><bold>✦ %boost_type% Boost</bold></#2ECC71> <dark_gray>•</dark_gray> <gold>%boost_multiplier%x</gold> <dark_gray>•</dark_gray> <gray>%boost_time_remaining% left</gray>",
+      "bar_text_paused": "<gray>「</gray><green>👤</green><gray>」</gray><#2ECC71><bold>✦ %boost_type% Boost</bold></#2ECC71> <dark_gray>•</dark_gray> <gold>%boost_multiplier%x</gold> <dark_gray>•</dark_gray> <red><bold>PAUSED</bold></red>"
+    },
+    "HIDDEN_ABILITY": {
+      "bar_color": "purple",
+      "bar_overlay": "notched_6",
+      "bar_text": "<gray>「</gray><green>👤</green><gray>」</gray><#9B59B6><bold>✦ %boost_type% Boost</bold></#9B59B6> <dark_gray>•</dark_gray> <gold>%boost_multiplier%x</gold> <dark_gray>•</dark_gray> <gray>%boost_time_remaining% left</gray>",
+      "bar_text_paused": "<gray>「</gray><green>👤</green><gray>」</gray><#9B59B6><bold>✦ %boost_type% Boost</bold></#9B59B6> <dark_gray>•</dark_gray> <gold>%boost_multiplier%x</gold> <dark_gray>•</dark_gray> <red><bold>PAUSED</bold></red>"
+    },
+    "EV": {
+      "bar_color": "red",
+      "bar_overlay": "notched_6",
+      "bar_text": "<gray>「</gray><green>👤</green><gray>」</gray><#E74C3C><bold>✦ %boost_type% Boost</bold></#E74C3C> <dark_gray>•</dark_gray> <gold>%boost_multiplier%x</gold> <dark_gray>•</dark_gray> <gray>%boost_time_remaining% left</gray>",
+      "bar_text_paused": "<gray>「</gray><green>👤</green><gray>」</gray><#E74C3C><bold>✦ %boost_type% Boost</bold></#E74C3C> <dark_gray>•</dark_gray> <gold>%boost_multiplier%x</gold> <dark_gray>•</dark_gray> <red><bold>PAUSED</bold></red>"
+    },
+    "IV": {
+      "bar_color": "blue",
+      "bar_overlay": "notched_6",
+      "bar_text": "<gray>「</gray><green>👤</green><gray>」</gray><#3498DB><bold>✦ %boost_type% Boost</bold></#3498DB> <dark_gray>•</dark_gray> <gold>%boost_multiplier%x</gold> <dark_gray>•</dark_gray> <gray>%boost_time_remaining% left</gray>",
+      "bar_text_paused": "<gray>「</gray><green>👤</green><gray>」</gray><#3498DB><bold>✦ %boost_type% Boost</bold></#3498DB> <dark_gray>•</dark_gray> <gold>%boost_multiplier%x</gold> <dark_gray>•</dark_gray> <red><bold>PAUSED</bold></red>"
+    },
+    "BERRY": {
+      "bar_color": "yellow",
+      "bar_overlay": "progress",
+      "bar_text": "<gray>「</gray><green>👤</green><gray>」</gray><#F1C40F><bold>✦ %boost_type% Boost</bold></#F1C40F> <dark_gray>•</dark_gray> <gold>%boost_multiplier%x</gold> <dark_gray>•</dark_gray> <gray>%boost_time_remaining% left</gray>",
+      "bar_text_paused": "<gray>「</gray><green>👤</green><gray>」</gray><#F1C40F><bold>✦ %boost_type% Boost</bold></#F1C40F> <dark_gray>•</dark_gray> <gold>%boost_multiplier%x</gold> <dark_gray>•</dark_gray> <red><bold>PAUSED</bold></red>"
+    },
+    "EGG": {
+      "bar_color": "white",
+      "bar_overlay": "progress",
+      "bar_text": "<gray>「</gray><green>👤</green><gray>」</gray><#ECF0F1><bold>✦ %boost_type% Boost</bold></#ECF0F1> <dark_gray>•</dark_gray> <gold>%boost_multiplier%x</gold> <dark_gray>•</dark_gray> <gray>%boost_time_remaining% left</gray>",
+      "bar_text_paused": "<gray>「</gray><green>👤</green><gray>」</gray><#ECF0F1><bold>✦ %boost_type% Boost</bold></#ECF0F1> <dark_gray>•</dark_gray> <gold>%boost_multiplier%x</gold> <dark_gray>•</dark_gray> <red><bold>PAUSED</bold></red>"
+    },
+    "HATCH": {
+      "bar_color": "yellow",
+      "bar_overlay": "notched_10",
+      "bar_text": "<gray>「</gray><green>👤</green><gray>」</gray><#E67E22><bold>✦ %boost_type% Boost</bold></#E67E22> <dark_gray>•</dark_gray> <gold>%boost_multiplier%x</gold> <dark_gray>•</dark_gray> <gray>%boost_time_remaining% left</gray>",
+      "bar_text_paused": "<gray>「</gray><green>👤</green><gray>」</gray><#E67E22><bold>✦ %boost_type% Boost</bold></#E67E22> <dark_gray>•</dark_gray> <gold>%boost_multiplier%x</gold> <dark_gray>•</dark_gray> <red><bold>PAUSED</bold></red>"
+    },
+    "CATCH_RATE": {
+      "bar_color": "red",
+      "bar_overlay": "notched_10",
+      "bar_text": "<gray>「</gray><green>👤</green><gray>」</gray><#C0392B><bold>✦ %boost_type% Boost</bold></#C0392B> <dark_gray>•</dark_gray> <gold>%boost_multiplier%x</gold> <dark_gray>•</dark_gray> <gray>%boost_time_remaining% left</gray>",
+      "bar_text_paused": "<gray>「</gray><green>👤</green><gray>」</gray><#C0392B><bold>✦ %boost_type% Boost</bold></#C0392B> <dark_gray>•</dark_gray> <gold>%boost_multiplier%x</gold> <dark_gray>•</dark_gray> <red><bold>PAUSED</bold></red>"
+    },
+    "MARK": {
+      "bar_color": "purple",
+      "bar_overlay": "notched_20",
+      "bar_text": "<gray>「</gray><green>👤</green><gray>」</gray><#8E44AD><bold>✦ %boost_type% Boost</bold></#8E44AD> <dark_gray>•</dark_gray> <gold>%boost_multiplier%x</gold> <dark_gray>•</dark_gray> <gray>%boost_time_remaining% left</gray>",
+      "bar_text_paused": "<gray>「</gray><green>👤</green><gray>」</gray><#8E44AD><bold>✦ %boost_type% Boost</bold></#8E44AD> <dark_gray>•</dark_gray> <gold>%boost_multiplier%x</gold> <dark_gray>•</dark_gray> <red><bold>PAUSED</bold></red>"
+    },
+    "ALPHA": {
+      "bar_color": "red",
+      "bar_overlay": "notched_12",
+      "bar_text": "<gray>「</gray><green>👤</green><gray>」</gray><#922B21><bold>✦ %boost_type% Boost</bold></#922B21> <dark_gray>•</dark_gray> <gold>%boost_multiplier%x</gold> <dark_gray>•</dark_gray> <gray>%boost_time_remaining% left</gray>",
+      "bar_text_paused": "<gray>「</gray><green>👤</green><gray>」</gray><#922B21><bold>✦ %boost_type% Boost</bold></#922B21> <dark_gray>•</dark_gray> <gold>%boost_multiplier%x</gold> <dark_gray>•</dark_gray> <red><bold>PAUSED</bold></red>"
+    },
+    "SPAWN_BUCKET": {
+      "bar_color": "blue",
+      "bar_overlay": "progress",
+      "bar_text": "<gray>「</gray><green>👤</green><gray>」</gray><#16A085><bold>✦ %boost_type% Boost</bold></#16A085> <dark_gray>•</dark_gray> <gold>%boost_multiplier%x</gold> <dark_gray>•</dark_gray> <gray>%boost_time_remaining% left</gray>",
+      "bar_text_paused": "<gray>「</gray><green>👤</green><gray>」</gray><#16A085><bold>✦ %boost_type% Boost</bold></#16A085> <dark_gray>•</dark_gray> <gold>%boost_multiplier%x</gold> <dark_gray>•</dark_gray> <red><bold>PAUSED</bold></red>"
     }
   },
   "boost_webhooks": {
     "SHINY": {
-      "username": "Shiny Boost Username",
-      "avatar_url": "https://www.pngall.com/wp-content/uploads/17/Brilliant-Twinkling-Sparkle-Glow-PNG-thumb.png",
-      "message": "A Shiny Boost Is Starting!",
-      "title": "Shiny Boost Title",
-      "color": "#00FFFF",
-      "thumbnail_url": "https://archives.bulbagarden.net/media/upload/4/4d/Bag_Shiny_Charm_SV_Sprite.png",
+      "username": "%boost_type% Boost",
+      "avatar_url": "",
+      "message": "",
+      "title": "✨ %boost_type% Boost Activated!",
+      "color": "#FF66C4",
+      "thumbnail_url": "",
       "fields": [
         {
-          "inline": false,
-          "name": "Shiny Field",
-          "value": "Shiny Value"
+          "inline": true,
+          "name": "Multiplier",
+          "value": "%boost_multiplier%x"
+        },
+        {
+          "inline": true,
+          "name": "Time Remaining",
+          "value": "%boost_time_remaining%"
+        }
+      ]
+    },
+    "EXPERIENCE": {
+      "username": "%boost_type% Boost",
+      "avatar_url": "",
+      "message": "",
+      "title": "📈 %boost_type% Boost Activated!",
+      "color": "#2ECC71",
+      "thumbnail_url": "",
+      "fields": [
+        {
+          "inline": true,
+          "name": "Multiplier",
+          "value": "%boost_multiplier%x"
+        },
+        {
+          "inline": true,
+          "name": "Time Remaining",
+          "value": "%boost_time_remaining%"
+        }
+      ]
+    },
+    "HIDDEN_ABILITY": {
+      "username": "%boost_type% Boost",
+      "avatar_url": "",
+      "message": "",
+      "title": "🎭 %boost_type% Boost Activated!",
+      "color": "#9B59B6",
+      "thumbnail_url": "",
+      "fields": [
+        {
+          "inline": true,
+          "name": "Multiplier",
+          "value": "%boost_multiplier%x"
+        },
+        {
+          "inline": true,
+          "name": "Time Remaining",
+          "value": "%boost_time_remaining%"
+        }
+      ]
+    },
+    "EV": {
+      "username": "%boost_type% Boost",
+      "avatar_url": "",
+      "message": "",
+      "title": "💪 %boost_type% Boost Activated!",
+      "color": "#E74C3C",
+      "thumbnail_url": "",
+      "fields": [
+        {
+          "inline": true,
+          "name": "Multiplier",
+          "value": "%boost_multiplier%x"
+        },
+        {
+          "inline": true,
+          "name": "Time Remaining",
+          "value": "%boost_time_remaining%"
+        }
+      ]
+    },
+    "IV": {
+      "username": "%boost_type% Boost",
+      "avatar_url": "",
+      "message": "",
+      "title": "🧬 %boost_type% Boost Activated!",
+      "color": "#3498DB",
+      "thumbnail_url": "",
+      "fields": [
+        {
+          "inline": true,
+          "name": "Multiplier",
+          "value": "%boost_multiplier%x"
+        },
+        {
+          "inline": true,
+          "name": "Time Remaining",
+          "value": "%boost_time_remaining%"
+        }
+      ]
+    },
+    "BERRY": {
+      "username": "%boost_type% Boost",
+      "avatar_url": "",
+      "message": "",
+      "title": "🍇 %boost_type% Boost Activated!",
+      "color": "#F1C40F",
+      "thumbnail_url": "",
+      "fields": [
+        {
+          "inline": true,
+          "name": "Multiplier",
+          "value": "%boost_multiplier%x"
+        },
+        {
+          "inline": true,
+          "name": "Time Remaining",
+          "value": "%boost_time_remaining%"
+        }
+      ]
+    },
+    "EGG": {
+      "username": "%boost_type% Boost",
+      "avatar_url": "",
+      "message": "",
+      "title": "🥚 %boost_type% Boost Activated!",
+      "color": "#3498DB",
+      "thumbnail_url": "",
+      "fields": [
+        {
+          "inline": true,
+          "name": "Multiplier",
+          "value": "%boost_multiplier%x"
+        },
+        {
+          "inline": true,
+          "name": "Time Remaining",
+          "value": "%boost_time_remaining%"
+        }
+      ]
+    },
+    "HATCH": {
+      "username": "%boost_type% Boost",
+      "avatar_url": "",
+      "message": "",
+      "title": "🐣 %boost_type% Boost Activated!",
+      "color": "#E67E22",
+      "thumbnail_url": "",
+      "fields": [
+        {
+          "inline": true,
+          "name": "Multiplier",
+          "value": "%boost_multiplier%x"
+        },
+        {
+          "inline": true,
+          "name": "Time Remaining",
+          "value": "%boost_time_remaining%"
+        }
+      ]
+    },
+    "CATCH_RATE": {
+      "username": "%boost_type% Boost",
+      "avatar_url": "",
+      "message": "",
+      "title": "🎯 %boost_type% Boost Activated!",
+      "color": "#C0392B",
+      "thumbnail_url": "",
+      "fields": [
+        {
+          "inline": true,
+          "name": "Multiplier",
+          "value": "%boost_multiplier%x"
+        },
+        {
+          "inline": true,
+          "name": "Time Remaining",
+          "value": "%boost_time_remaining%"
+        }
+      ]
+    },
+    "MARK": {
+      "username": "%boost_type% Boost",
+      "avatar_url": "",
+      "message": "",
+      "title": "⭐ %boost_type% Boost Activated!",
+      "color": "#8E44AD",
+      "thumbnail_url": "",
+      "fields": [
+        {
+          "inline": true,
+          "name": "Multiplier",
+          "value": "%boost_multiplier%x"
+        },
+        {
+          "inline": true,
+          "name": "Time Remaining",
+          "value": "%boost_time_remaining%"
+        }
+      ]
+    },
+    "ALPHA": {
+      "username": "%boost_type% Boost",
+      "avatar_url": "",
+      "message": "",
+      "title": "👑 %boost_type% Boost Activated!",
+      "color": "#922B21",
+      "thumbnail_url": "",
+      "fields": [
+        {
+          "inline": true,
+          "name": "Multiplier",
+          "value": "%boost_multiplier%x"
+        },
+        {
+          "inline": true,
+          "name": "Time Remaining",
+          "value": "%boost_time_remaining%"
+        }
+      ]
+    },
+    "SPAWN_BUCKET": {
+      "username": "%boost_type% Boost",
+      "avatar_url": "",
+      "message": "",
+      "title": "🪣 %boost_type% Boost Activated!",
+      "color": "#16A085",
+      "thumbnail_url": "",
+      "fields": [
+        {
+          "inline": true,
+          "name": "Multiplier",
+          "value": "%boost_multiplier%x"
+        },
+        {
+          "inline": true,
+          "name": "Time Remaining",
+          "value": "%boost_time_remaining%"
         }
       ]
     }

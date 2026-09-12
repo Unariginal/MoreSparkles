@@ -97,28 +97,18 @@ public class TextUtils {
     }
 
     public static String hms(long rawTime) {
-        String output = "";
-        if (rawTime < 0) rawTime = 0;
+        long seconds = Math.max(rawTime, 0);
 
-        long seconds = rawTime;
-        long days = seconds / 86400;
-        seconds %= 86400;
-        long hours = seconds / 3600;
-        seconds %= 3600;
-        long minutes = seconds / 60;
-        seconds %= 60;
+        long days = seconds / 86400; seconds %= 86400;
+        long hours = seconds / 3600; seconds %= 3600;
+        long minutes = seconds / 60; seconds %= 60;
 
         if (days > 0) {
-            output = output.concat(days + "d ");
+            return String.format("%dd %02d:%02d:%02d", days, hours, minutes, seconds);
+        } else if (hours > 0) {
+            return String.format("%d:%02d:%02d", hours, minutes, seconds);
+        } else {
+            return String.format("%d:%02d", minutes, seconds);
         }
-        if (hours > 0) {
-            output = output.concat(hours + "h ");
-        }
-        if (minutes > 0) {
-            output = output.concat(minutes + "m ");
-        }
-        output = output.concat(seconds + "s");
-
-        return output;
     }
 }

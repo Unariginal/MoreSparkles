@@ -1,16 +1,26 @@
 package me.unariginal.moresparkles.data;
 
 public enum BoostType {
-    SHINY, // Done
-    EXPERIENCE, // Done
-    HIDDEN_ABILITY, // Done
-    EV, // Done
-    IV, // Done
-    BERRY, // Done
-    EGG,
-    HATCH,
-    CATCH_RATE, // Done
-    MARK, // Done
-    ALPHA, // Done
-    SPAWN_BUCKET // Done
+    SHINY("Shiny"), // Done
+    EXPERIENCE("Experience"), // Done
+    HIDDEN_ABILITY("Hidden Ability"), // Done
+    EV("EV"), // Done
+    IV("IV"), // Done
+    BERRY("Berry"), // Done
+    EGG("Egg Laying"),
+    HATCH("Egg Hatching"),
+    CATCH_RATE("Catch Rate"), // Done
+    MARK("Mark"), // Done
+    ALPHA("Alpha"), // Done
+    SPAWN_BUCKET("Spawn Bucket"); // Done
+
+    private final String displayName;
+
+    BoostType(String displayName) {
+        this.displayName = displayName;
+    }
+
+    public String getDisplayName() {
+        return displayName;
+    }
 }
