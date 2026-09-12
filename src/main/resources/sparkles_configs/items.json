@@ -6,6 +6,51 @@
       "lore": [
         "<gray>Having one of these mysterious shining charms makes it more likely you'll encounter Shiny Pokémon in the wild."
       ]
+    },
+    "exp_charm": {
+      "boost_type": "experience",
+      "multiplier": 2.0,
+      "lore": []
+    },
+    "hidden_ability_charm": {
+      "boost_type": "hidden_ability",
+      "multiplier": 2.0,
+      "lore": []
+    },
+    "effort_charm": {
+      "boost_type": "EV",
+      "multiplier": 2.0,
+      "lore": []
+    },
+    "iv_charm": {
+      "boost_type": "IV",
+      "multiplier": 2.0,
+      "lore": []
+    },
+    "berry_charm": {
+      "boost_type": "berry",
+      "multiplier": 2.0,
+      "lore": []
+    },
+    "catching_charm": {
+      "boost_type": "catch_rate",
+      "multiplier": 2.0,
+      "lore": []
+    },
+    "mark_charm": {
+      "boost_type": "mark",
+      "multiplier": 2.0,
+      "lore": []
+    },
+    "alpha_charm": {
+      "boost_type": "alpha",
+      "multiplier": 2.0,
+      "lore": []
+    },
+    "bucket_charm": {
+      "boost_type": "spawn_bucket",
+      "multiplier": 2.0,
+      "lore": []
     }
   }
 }

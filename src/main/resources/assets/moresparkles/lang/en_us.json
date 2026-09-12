@@ -1,3 +1,12 @@
 {
-  "item.moresparkles.shiny_charm": "Shiny Charm"
+  "item.moresparkles.shiny_charm": "Shiny Charm",
+  "item.moresparkles.exp_charm": "Experience Charm",
+  "item.moresparkles.hidden_ability_charm": "Hidden Ability Charm",
+  "item.moresparkles.effort_charm": "Effort Charm",
+  "item.moresparkles.iv_charm": "IV Charm",
+  "item.moresparkles.berry_charm": "Berry Charm",
+  "item.moresparkles.catching_charm": "Catching Charm",
+  "item.moresparkles.mark_charm": "Mark Charm",
+  "item.moresparkles.alpha_charm": "Alpha Charm",
+  "item.moresparkles.bucket_charm": "Bucket Charm"
 }
