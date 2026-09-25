@@ -10,6 +10,7 @@
   "ev_booster_ignores_vitamins": true,
   "ev_booster_ignores_sidemod_source": true,
   "hidden_ability_booster_base_chance": 0.05,
+  "iv_booster_strength_constant": 4,
   "persistent_data_key_blacklist": {
     "IV": ["raid_data"]
   },

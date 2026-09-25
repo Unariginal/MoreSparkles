@@ -4,10 +4,7 @@ import com.cobblemon.mod.common.api.events.CobblemonEvents;
 import com.cobblemon.mod.common.api.events.berry.BerryHarvestEvent;
 import com.cobblemon.mod.common.api.events.entity.SpawnEvent;
 import com.cobblemon.mod.common.api.events.pokeball.PokemonCatchRateEvent;
-import com.cobblemon.mod.common.api.events.pokemon.EvGainedEvent;
-import com.cobblemon.mod.common.api.events.pokemon.ExperienceGainedEvent;
-import com.cobblemon.mod.common.api.events.pokemon.PokemonCapturedEvent;
-import com.cobblemon.mod.common.api.events.pokemon.ShinyChanceCalculationEvent;
+import com.cobblemon.mod.common.api.events.pokemon.*;
 import com.cobblemon.mod.common.api.pokemon.stats.Stat;
 import com.cobblemon.mod.common.api.spawning.fishing.FishingSpawnCause;
 import com.cobblemon.mod.common.entity.pokemon.PokemonEntity;
@@ -33,11 +30,13 @@ public class EventManager {
         CobblemonEvents.SHINY_CHANCE_CALCULATION.subscribe(EventManager::shinyBoost);
         CobblemonEvents.EXPERIENCE_GAINED_EVENT_PRE.subscribe(EventManager::experienceBoost);
         CobblemonEvents.EV_GAINED_EVENT_PRE.subscribe(EventManager::evBoost);
-        CobblemonEvents.POKEMON_CAPTURED.subscribe(EventManager::ivBoost);
         CobblemonEvents.BERRY_HARVEST.subscribe(EventManager::berryHarvestBoost);
         CobblemonEvents.POKEMON_ENTITY_SPAWN.subscribe(EventManager::markBoost);
         CobblemonEvents.POKEMON_CATCH_RATE.subscribe(EventManager::catchRateBoost);
         CobblemonEvents.POKEMON_ENTITY_SPAWN.subscribe(EventManager::hiddenAbilityBoost);
+        CobblemonEvents.POKEMON_CAPTURED.subscribe(EventManager::ivBoostOnCapture);
+        CobblemonEvents.HATCH_EGG_POST.subscribe(EventManager::ivBoostOnHatch);
+        CobblemonEvents.FOSSIL_REVIVED.subscribe(EventManager::ivBoostOnFossilRevive);
     }
 
     private static void shinyBoost(ShinyChanceCalculationEvent event) {
@@ -132,27 +131,16 @@ public class EventManager {
         }
     }
 
-    private static void ivBoost(PokemonCapturedEvent event) {
-        ServerPlayerEntity player = event.getPlayer();
-        if (!Config.canBeBoosted(event.getPokemon(), BoostType.IV)) return;
-        int multiplier = (int) getGenericMultiplierTotal(player, BoostType.IV);
+    private static void ivBoostOnCapture(PokemonCapturedEvent event) {
+        boostIvs(event.getPlayer(), event.getPokemon());
+    }
 
-        int rolls = Math.max(1, multiplier);
-        IVs ivs = event.getPokemon().getIvs();
-        Random random = new Random();
+    private static void ivBoostOnHatch(HatchEggEvent.Post event) {
+        boostIvs(event.getPlayer(), event.getPokemon());
+    }
 
-        List<Stat> stats = new ArrayList<>();
-        for (Map.Entry<? extends Stat, ? extends Integer> entry : ivs) {
-            stats.add(entry.getKey());
-        }
-
-        for (Stat stat : stats) {
-            int best = 0;
-            for (int i = 0; i < rolls; i++) {
-                best = Math.max(best, random.nextInt(IVs.MAX_VALUE + 1));
-            }
-            ivs.set(stat, best);
-        }
+    private static void ivBoostOnFossilRevive(FossilRevivedEvent event) {
+        boostIvs(event.getPlayer(), event.getPokemon());
     }
 
     private static void markBoost(SpawnEvent<PokemonEntity> event) {
@@ -183,6 +171,27 @@ public class EventManager {
             if (Math.random() <= chance) {
                 FishingSpawnCause.Companion.alterHAAttempt(event.getEntity());
             }
+        }
+    }
+
+    private static void boostIvs(ServerPlayerEntity player, Pokemon pokemon) {
+        if (!Config.canBeBoosted(pokemon, BoostType.IV)) return;
+        double multiplier = getGenericMultiplierTotal(player, BoostType.IV);
+
+        double strength = Math.max(0, (multiplier - 1) / (multiplier - 1 + CONFIG.ivBoosterStrengthConstant));
+        if (strength <= 0) return;
+
+        IVs ivs = pokemon.getIvs();
+
+        Map<Stat, Integer> currentIvs = new HashMap<>();
+        for (Map.Entry<? extends Stat, ? extends Integer> entry : ivs) {
+            currentIvs.put(entry.getKey(), entry.getValue());
+        }
+
+        for (Map.Entry<Stat, Integer> entry : currentIvs.entrySet()) {
+            int current = entry.getValue();
+            int boosted = (int) Math.round(current + (IVs.MAX_VALUE - current) * strength);
+            ivs.set(entry.getKey(), boosted);
         }
     }
 }

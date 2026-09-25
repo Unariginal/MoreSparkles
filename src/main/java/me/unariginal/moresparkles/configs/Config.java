@@ -28,6 +28,7 @@ public class Config {
     public boolean evBoosterIgnoresVitamins;
     public boolean evBoosterIgnoresSidemodSource;
     public float hiddenAbilityBoosterBaseChance;
+    public int ivBoosterStrengthConstant;
     @Nullable
     public Map<BoostType, List<String>> persistentDataKeyBlacklist;
     @Nullable
