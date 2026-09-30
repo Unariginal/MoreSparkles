@@ -47,7 +47,7 @@ Sub Commands:
 - /sparkles boost stop <type> global/<player(s)>
 - /sparkles boost status [global/<player>]
 - /sparkles check-queue [global/<player>]
-- /sparkles clear-queue global/<player(s)>
+- /sparkles clear-queue <type> global/<player(s)>
 - /sparkles check-rate <type> [<player>]
 - /sparkles area info [<area-id>]
 - /sparkles reload

@@ -43,13 +43,13 @@ public class PlayerDataManager {
 
     public static void savePlayerBoostData(ServerPlayerEntity player) {
         Map<BoostType, Boost> boostMap = PlayerBoostCache.currentBoosts(player);
-        if (boostMap == null || boostMap.isEmpty()) {
+        Map<BoostType, LinkedList<Boost>> listQueuedBoost = ConfigManager.toSerializableQueues(PlayerBoostQueueCache.currentQueuedBoosts(player));
+        if ((boostMap == null || boostMap.isEmpty()) && listQueuedBoost.isEmpty()) {
             deletePlayerBoostFile(player);
             return;
         }
 
-        Map<BoostType, LinkedList<Boost>> listQueuedBoost = ConfigManager.toSerializableQueues(PlayerBoostQueueCache.currentQueuedBoosts(player));
-        PlayerData playerData = new PlayerData(new HashMap<>(boostMap), listQueuedBoost);
+        PlayerData playerData = new PlayerData(boostMap != null ? new HashMap<>(boostMap) : new HashMap<>(), listQueuedBoost);
 
         File playerFile = getPlayerFile(player);
         if (!playerFile.exists()) {

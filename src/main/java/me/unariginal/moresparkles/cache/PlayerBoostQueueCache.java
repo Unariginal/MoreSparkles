@@ -90,4 +90,16 @@ public class PlayerBoostQueueCache {
     public static void remove(ServerPlayerEntity player) {
         remove(player.getUuid());
     }
+
+    public static void remove(UUID uuid, BoostType type) {
+        Map<BoostType, Queue<Boost>> queuedBoosts = currentQueuedBoosts(uuid);
+        if (queuedBoosts == null) return;
+
+        queuedBoosts.remove(type);
+        if (queuedBoosts.isEmpty()) queuedPlayerBoosts.remove(uuid);
+    }
+
+    public static void remove(ServerPlayerEntity player, BoostType type) {
+        remove(player.getUuid(), type);
+    }
 }

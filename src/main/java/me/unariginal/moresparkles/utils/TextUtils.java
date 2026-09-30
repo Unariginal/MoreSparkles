@@ -3,6 +3,7 @@ package me.unariginal.moresparkles.utils;
 import me.unariginal.moresparkles.MoreSparkles;
 import me.unariginal.moresparkles.data.boostareas.BoostArea;
 import me.unariginal.moresparkles.data.Boost;
+import me.unariginal.moresparkles.data.BoostType;
 import me.unariginal.moresparkles.placeholders.ParseContext;
 import me.unariginal.moresparkles.placeholders.interfaces.BoostAreaPlaceholder;
 import me.unariginal.moresparkles.placeholders.interfaces.BoostPlaceholder;
@@ -35,6 +36,7 @@ public class TextUtils {
     public static String parse(String text, ParseContext parseContext) {
         text = parse(text);
         if (parseContext.getBoost() != null) text = parse(text, parseContext.getBoost());
+        else if (parseContext.getBoostType() != null) text = parse(text, parseContext.getBoostType());
         if (parseContext.getBoostArea() != null) text = parse(text, parseContext.getBoostArea());
         if (parseContext.getPlayer() != null) text = parse(text, parseContext.getPlayer());
         return text;
@@ -65,6 +67,10 @@ public class TextUtils {
             }
             return null;
         });
+    }
+
+    public static String parse(String text, BoostType boostType) {
+        return parseHelper(text, (id, args) -> id.equals("boost_type") ? boostType.getDisplayName() : null);
     }
 
     public static String parse(String text, BoostArea boostArea) {

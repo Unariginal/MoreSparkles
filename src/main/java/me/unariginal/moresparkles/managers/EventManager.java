@@ -152,7 +152,7 @@ public class EventManager {
     }
 
     private static void markBoostOnHatch(HatchEggEvent.Post event) {
-        boostIvs(event.getPlayer(), event.getPokemon());
+        boostMarks(event.getPlayer(), event.getPokemon());
     }
 
     private static void markBoostOnFossilRevive(FossilRevivedEvent event) {
