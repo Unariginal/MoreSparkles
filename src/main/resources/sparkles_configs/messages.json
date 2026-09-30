@@ -2,7 +2,6 @@
   "prefix": "<gray>[<light_purple>MoreSparkles<gray>]",
   "messages": {
     "command_reload": "%prefix% <green>Reloaded!",
-    "command_check_rate": "%prefix% <gray>Base: <yellow>1/%base_shiny_rate%<gray> | Effective: <yellow>1/%player_shiny_rate%",
     "player_boost_started": "%prefix% <green>Started a %boost_multiplier%x %boost_type% boost for %boost_duration% for %player_name%!",
     "player_boost_added_to_queue": "%prefix% <green>Added a %boost_multiplier%x %boost_type% boost with a %boost_duration% duration to %player_name%'s queue!",
     "player_boost_stopped": "%prefix% <green>Stopped %player_name%'s current %boost_type% boost!",
@@ -17,6 +16,18 @@
     "no_queued_boosts": "%prefix% <red>No Queued Boosts",
     "area_info": "%prefix% <gray>Area \"%boost_area_name%\": %boost_area_type% type | %boost_area_multiplier%x multiplier",
     "not_in_area": "%prefix% <red>You're not in an area!"
+  },
+  "check_rate_messages": {
+    "SHINY": "%prefix% <gray>Shiny | Base: <yellow>1/%base_shiny_rate%<gray> | Effective: <yellow>1/%player_shiny_rate%",
+    "EXPERIENCE": "%prefix% <gray>Experience | Multiplier: <yellow>%player_experience_multiplier%x",
+    "HIDDEN_ABILITY": "%prefix% <gray>Hidden Ability | Multiplier: <yellow>%player_hidden_ability_multiplier%x<gray> | Chance per spawn: <yellow>%player_hidden_ability_chance%%",
+    "EV": "%prefix% <gray>EV | Multiplier: <yellow>%player_ev_multiplier%x",
+    "IV": "%prefix% <gray>IV | Multiplier: <yellow>%player_iv_multiplier%x<gray> | Strength Toward Perfect IVs: <yellow>%player_iv_strength%%",
+    "BERRY": "%prefix% <gray>Berry | Multiplier: <yellow>%player_berry_multiplier%x",
+    "CATCH_RATE": "%prefix% <gray>Catch Rate | Multiplier: <yellow>%player_catch_rate_multiplier%x",
+    "MARK": "%prefix% <gray>Mark | Multiplier: <yellow>%player_mark_multiplier%x",
+    "ALPHA": "%prefix% <gray>Alpha | Multiplier: <yellow>%player_alpha_multiplier%x<gray> | Alpha bucket chance: <yellow>%player_alpha_bucket_chance%%",
+    "SPAWN_BUCKET": "%prefix% <gray>Spawn Bucket | Multiplier: <yellow>%player_spawn_bucket_multiplier%x<gray> | Chances | Common: <yellow>%player_bucket_chance common%<gray> | Uncommon: <yellow>%player_bucket_chance uncommon%<gray> | Rare: <yellow>%player_bucket_chance rare%<gray> | Ultra-Rare: <yellow>%player_bucket_chance ultra-rare%"
   },
   "global_boost_bossbars": {
     "SHINY": {

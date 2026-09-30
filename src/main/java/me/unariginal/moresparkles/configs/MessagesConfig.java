@@ -11,6 +11,8 @@ public class MessagesConfig {
     public String prefix = "<gray>[<light_purple>MoreSparkles<gray>]";
     public Messages messages;
     @Nullable
+    public Map<BoostType, String> checkRateMessages;
+    @Nullable
     public Map<BoostType, BossbarSettings> globalBoostBossbars;
     @Nullable
     public Map<BoostType, BossbarSettings> playerBoostBossbars;
@@ -19,7 +21,6 @@ public class MessagesConfig {
 
     public static class Messages {
         public String commandReload = "%prefix% <green>Reloaded!";
-        public String commandCheckRate = "%prefix% <gray>Base: <yellow>1/%base_shiny_rate%<gray> | Effective: <yellow>1/%player_shiny_rate%";
         public String playerBoostStarted = "%prefix% <green>Started a %boost_multiplier%x %boost_type% boost for %boost_duration% for %player_name%!";
         public String playerBoostAddedToQueue = "%prefix% <green>Added a %boost_multiplier%x %boost_type% boost with a %boost_duration% duration to %player_name%'s queue!";
         public String playerBoostStopped = "%prefix% <green>Stopped %player_name%'s current %boost_type% boost!";

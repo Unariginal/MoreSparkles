@@ -32,6 +32,7 @@ import java.util.List;
 import java.util.Map;
 
 import static me.unariginal.moresparkles.configs.ConfigManager.*;
+import static me.unariginal.moresparkles.placeholders.PlaceholderManager.registerPlaceholders;
 
 public class MoreSparkles implements ModInitializer {
     public static final String MOD_ID = "moresparkles";
@@ -62,6 +63,7 @@ public class MoreSparkles implements ModInitializer {
         ServerLifecycleEvents.SERVER_STARTING.register(server -> {
             this.server = server;
             this.audiences = FabricServerAudiences.of(server);
+            registerPlaceholders();
         });
 
         ServerLifecycleEvents.SERVER_STARTED.register(server -> {
