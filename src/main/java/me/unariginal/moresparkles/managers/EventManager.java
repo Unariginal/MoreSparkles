@@ -160,8 +160,6 @@ public class EventManager {
         boostMarks(event.getPlayer(), event.getPokemon());
     }
 
-    // applyPotentialMarks(chance) succeeds when random(0, 100) / chance < markChance * 100,
-    // so chance is a straight multiplier on each mark group's odds.
     private static void boostMarks(ServerPlayerEntity player, Pokemon pokemon) {
         if (!Config.canBeBoosted(pokemon, BoostType.MARK)) return;
         float multiplier = getGenericMultiplierTotal(player, BoostType.MARK);
