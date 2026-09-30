@@ -1,5 +1,6 @@
 package me.unariginal.moresparkles.managers;
 
+import me.unariginal.moresparkles.MoreSparkles;
 import me.unariginal.moresparkles.data.boostareas.BoostArea;
 
 import java.util.Random;
@@ -14,7 +15,12 @@ public class TickManager {
         if (particleCooldown <= 0) {
             particleCooldown = new Random().nextLong(2*20, 5*20);
             for (BoostArea area : BOOST_AREAS.values()) {
-                area.spawnRandomParticles();
+                // An exception here would escape the server tick and crash the server
+                try {
+                    area.spawnRandomParticles();
+                } catch (Exception e) {
+                    MoreSparkles.LOGGER.error("[MoreSparkles] Failed to spawn particles for boost area \"{}\"", area.displayName, e);
+                }
             }
         }
     }

@@ -1,7 +1,5 @@
 package me.unariginal.moresparkles.configs;
 
-import com.google.common.collect.Maps;
-import com.google.gson.*;
 import me.unariginal.moresparkles.MoreSparkles;
 import me.unariginal.moresparkles.cache.PlayerBoostCache;
 import me.unariginal.moresparkles.cache.PlayerBoostQueueCache;
@@ -14,24 +12,33 @@ import java.nio.file.Files;
 import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.Map;
-import java.util.Queue;
 
 import static me.unariginal.moresparkles.utils.GsonUtils.gson;
 
 @SuppressWarnings("ResultOfMethodCallIgnored")
 public class PlayerDataManager {
     public static void loadPlayerBoostData(ServerPlayerEntity player) {
-        PlayerData playerData = ConfigManager.loadFile("/players/" + player.getUuidAsString() + ".json", PlayerData.class);
-        if (playerData == null) return;
-        playerData.activeBoosts.values().forEach(boost -> {
-            boost.setupBossbar(false);
-            boost.resume();
-            PlayerBoostCache.add(player, boost);
-        });
-        playerData.queuedBoosts.values().forEach(boostList -> boostList.forEach(boost -> {
-            boost.setupBossbar(false);
-            PlayerBoostQueueCache.queueBoost(player, boost);
-        }));
+        File playerFile = getPlayerFile(player);
+        if (!playerFile.exists()) return;
+
+        PlayerData playerData = ConfigManager.loadFile("players/" + playerFile.getName(), PlayerData.class);
+        if (playerData == null) {
+            ConfigManager.backupBrokenFile(playerFile);
+            return;
+        }
+        if (playerData.activeBoosts != null) {
+            playerData.activeBoosts.values().forEach(boost -> {
+                boost.setupBossbar(false);
+                boost.resume();
+                PlayerBoostCache.add(player, boost);
+            });
+        }
+        if (playerData.queuedBoosts != null) {
+            playerData.queuedBoosts.values().forEach(boostList -> boostList.forEach(boost -> {
+                boost.setupBossbar(false);
+                PlayerBoostQueueCache.queueBoost(player, boost);
+            }));
+        }
     }
 
     public static void savePlayerBoostData(ServerPlayerEntity player) {
@@ -41,21 +48,10 @@ public class PlayerDataManager {
             return;
         }
 
-        Map<BoostType, Queue<Boost>> queuedBoosts = PlayerBoostQueueCache.currentQueuedBoosts(player);
-        Map<BoostType, LinkedList<Boost>> listQueuedBoost = Maps.newConcurrentMap();
-        if (queuedBoosts != null && !queuedBoosts.isEmpty()) {
-            queuedBoosts.forEach((boostType, queue) -> {
-                if (!queue.isEmpty()) {
-                    if (!listQueuedBoost.containsKey(boostType)) {
-                        listQueuedBoost.put(boostType, new LinkedList<>());
-                    }
-                    queue.forEach(boost -> listQueuedBoost.get(boostType).add(boost));
-                }
-            });
-        }
+        Map<BoostType, LinkedList<Boost>> listQueuedBoost = ConfigManager.toSerializableQueues(PlayerBoostQueueCache.currentQueuedBoosts(player));
         PlayerData playerData = new PlayerData(new HashMap<>(boostMap), listQueuedBoost);
 
-        File playerFile = new File(ConfigManager.configDir, "players/" + player.getUuidAsString() + ".json");
+        File playerFile = getPlayerFile(player);
         if (!playerFile.exists()) {
             try {
                 Files.createDirectories(playerFile.getParentFile().toPath());
@@ -68,7 +64,10 @@ public class PlayerDataManager {
     }
 
     public static void deletePlayerBoostFile(ServerPlayerEntity player) {
-        File playerFile = new File(ConfigManager.configDir, "players/" + player.getUuidAsString() + ".json");
-        playerFile.delete();
+        getPlayerFile(player).delete();
+    }
+
+    private static File getPlayerFile(ServerPlayerEntity player) {
+        return new File(ConfigManager.configDir, "players/" + player.getUuidAsString() + ".json");
     }
 }

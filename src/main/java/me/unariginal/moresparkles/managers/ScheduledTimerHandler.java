@@ -3,7 +3,7 @@ package me.unariginal.moresparkles.managers;
 import me.unariginal.moresparkles.MoreSparkles;
 import me.unariginal.moresparkles.cache.PlayerBoostCache;
 import me.unariginal.moresparkles.cache.PlayerBoostQueueCache;
-import me.unariginal.moresparkles.configs.Config;
+import me.unariginal.moresparkles.configs.GlobalBoostDataManager;
 import me.unariginal.moresparkles.configs.PlayerDataManager;
 import me.unariginal.moresparkles.data.Boost;
 import me.unariginal.moresparkles.data.BoostType;
@@ -28,13 +28,15 @@ public class ScheduledTimerHandler {
     }
 
     public void updateBoosts() {
-        MoreSparkles.INSTANCE.server.execute(() -> {
-            try {
-                updateBoostsOnServerThread();
-            } catch (Throwable throwable) {
-                MoreSparkles.LOGGER.error("[MoreSparkles] Error updating boosts and boost displays.", throwable);
-            }
-        });
+        if (MoreSparkles.INSTANCE.server != null) {
+            MoreSparkles.INSTANCE.server.execute(() -> {
+                try {
+                    updateBoostsOnServerThread();
+                } catch (Throwable throwable) {
+                    MoreSparkles.LOGGER.error("[MoreSparkles] Error updating boosts and boost displays.", throwable);
+                }
+            });
+        }
     }
 
     public void updateBoostsOnServerThread() {
@@ -49,6 +51,7 @@ public class ScheduledTimerHandler {
                         Boost nextBoost = PlayerBoostQueueCache.poll(player, boost.boostType);
                         if (nextBoost != null) {
                             nextBoost.activate();
+                            if (BoostManager.shouldPausePlayerBoosts(nextBoost.boostType)) nextBoost.pause();
                             PlayerBoostCache.add(player, nextBoost);
                             if (nextBoost.bossBar != null) player.showBossBar(nextBoost.bossBar);
                         }
@@ -78,12 +81,13 @@ public class ScheduledTimerHandler {
                     if (nextBoost != null) {
                         nextBoost.activate();
                         BoostManager.globalBoosts.put(nextBoost.boostType, nextBoost);
+                        if (CONFIG.pausePlayerBoostsDuringGlobalBoost) BoostManager.pausePlayerBoosts(nextBoost.boostType);
                         if (nextBoost.bossBar != null) MoreSparkles.INSTANCE.audiences.all().showBossBar(nextBoost.bossBar);
                     } else {
                         BoostManager.resumePlayerBoosts(boost.boostType);
                     }
 
-                    Config.saveGlobalBoostData();
+                    GlobalBoostDataManager.saveGlobalBoostData();
                     continue;
                 }
 
@@ -101,21 +105,32 @@ public class ScheduledTimerHandler {
                         Long id = webhookTracker.get(boost.boostType);
                         if (id != null && id != -1) {
                             WebhookManager.editWebhookEmbed(id, boost)
-                                    .thenAccept(webhookId -> {
-                                        if (webhookId == null) return;
-                                        MoreSparkles.INSTANCE.server.execute(() -> webhookTracker.put(boost.boostType, webhookId));
-                                    });
+                                    .thenAccept(webhookId -> MoreSparkles.INSTANCE.server.execute(() -> {
+                                        // The message was deleted, so forget it and send a new one next update
+                                        if (webhookId == null) webhookTracker.remove(boost.boostType, id);
+                                        else trackWebhookMessage(boost, webhookId);
+                                    }));
                         } else {
                             WebhookManager.sendWebhookEmbed(boost)
                                     .thenAccept(webhookId -> {
                                         if (webhookId == null) return;
-                                        MoreSparkles.INSTANCE.server.execute(() -> webhookTracker.put(boost.boostType, webhookId));
+                                        MoreSparkles.INSTANCE.server.execute(() -> trackWebhookMessage(boost, webhookId));
                                     });
                         }
                     }
                 }
             }
             webhookUpdateTracker--;
+        }
+    }
+
+    // Requests finish asynchronously, so the boost may have ended (and its tracker entry been removed) by now.
+    // Don't let a late result attach an old message to whatever boost of that type comes next.
+    private void trackWebhookMessage(Boost boost, long webhookId) {
+        if (BoostManager.globalBoosts.get(boost.boostType) == boost) {
+            webhookTracker.put(boost.boostType, webhookId);
+        } else if (CONFIG.webhookSettings != null && CONFIG.webhookSettings.deleteWhenBoostEnds && webhookId != -1) {
+            WebhookManager.deleteWebhook(webhookId);
         }
     }
 }

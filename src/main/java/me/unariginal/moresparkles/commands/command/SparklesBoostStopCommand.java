@@ -7,6 +7,7 @@ import com.mojang.brigadier.exceptions.CommandSyntaxException;
 import me.lucko.fabric.api.permissions.v0.Permissions;
 import me.unariginal.moresparkles.cache.PlayerBoostCache;
 import me.unariginal.moresparkles.cache.PlayerBoostQueueCache;
+import me.unariginal.moresparkles.configs.PlayerDataManager;
 import me.unariginal.moresparkles.data.Boost;
 import me.unariginal.moresparkles.data.BoostType;
 import me.unariginal.moresparkles.managers.BoostManager;
@@ -17,10 +18,7 @@ import net.minecraft.server.command.ServerCommandSource;
 import net.minecraft.server.network.ServerPlayerEntity;
 
 import java.time.LocalDateTime;
-import java.util.Collection;
-import java.util.concurrent.atomic.AtomicReference;
 
-import static me.unariginal.moresparkles.configs.ConfigManager.CONFIG;
 import static me.unariginal.moresparkles.configs.ConfigManager.MESSAGES;
 import static net.minecraft.server.command.CommandManager.argument;
 import static net.minecraft.server.command.CommandManager.literal;
@@ -37,23 +35,18 @@ public class SparklesBoostStopCommand {
                             return builder.buildFuture();
                         })
                         .then(argument("players", EntityArgumentType.players())
-                                .executes(SparklesBoostStopCommand::execute))
+                                .executes(ctx -> execute(ctx, false)))
                         .then(literal("global")
-                                .executes(SparklesBoostStopCommand::execute)));
+                                .executes(ctx -> execute(ctx, true))));
 
     }
 
-    private static int execute(CommandContext<ServerCommandSource> ctx) {
+    private static int execute(CommandContext<ServerCommandSource> ctx, boolean global) throws CommandSyntaxException {
         String boostTypeName = StringArgumentType.getString(ctx, "type");
         BoostType boostType = BoostType.valueOf(boostTypeName);
 
-        AtomicReference<Collection<ServerPlayerEntity>> playersReference = new AtomicReference<>(null);
-        try {
-            playersReference.set(EntityArgumentType.getPlayers(ctx, "players"));
-        } catch (IllegalArgumentException | CommandSyntaxException ignored) {}
-
-        if (playersReference.get() != null) {
-            for (ServerPlayerEntity player : playersReference.get()) {
+        if (!global) {
+            for (ServerPlayerEntity player : EntityArgumentType.getPlayers(ctx, "players")) {
                 Boost boost = PlayerBoostCache.currentBoost(player, boostType);
                 if (boost != null) {
                     if (boost.bossBar != null) player.hideBossBar(boost.bossBar);
@@ -63,15 +56,21 @@ public class SparklesBoostStopCommand {
                     Boost nextBoost = PlayerBoostQueueCache.poll(player, boostType);
                     if (nextBoost != null) {
                         nextBoost.activate();
+                        if (BoostManager.shouldPausePlayerBoosts(boostType)) nextBoost.pause();
                         PlayerBoostCache.add(player, nextBoost);
                         if (nextBoost.bossBar != null) player.showBossBar(nextBoost.bossBar);
                     }
+                    PlayerDataManager.savePlayerBoostData(player);
                 }
             }
         } else {
-            ctx.getSource().sendMessage(TextUtils.deserialize(MESSAGES.messages.globalBoostStopped, ParseContext.builder().boost(BoostManager.globalBoosts.get(boostType)).build()));
-            BoostManager.globalBoosts.get(boostType).boostExpirationTime = LocalDateTime.now().plusSeconds(1).toString();
-            if (CONFIG.pausePlayerBoostsDuringGlobalBoost) BoostManager.resumePlayerBoosts(boostType);
+            Boost globalBoost = BoostManager.globalBoosts.get(boostType);
+            if (globalBoost == null) {
+                ctx.getSource().sendMessage(TextUtils.deserialize(MESSAGES.messages.noActiveBoosts));
+                return 0;
+            }
+            ctx.getSource().sendMessage(TextUtils.deserialize(MESSAGES.messages.globalBoostStopped, ParseContext.builder().boost(globalBoost).build()));
+            globalBoost.boostExpirationTime = LocalDateTime.now().plusSeconds(1).toString();
         }
         return 1;
     }

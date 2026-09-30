@@ -18,9 +18,10 @@ import static me.unariginal.moresparkles.configs.ConfigManager.ITEMS_CONFIG;
 public class CharmItem extends SimplePolymerItem {
     private final PolymerModelData modelData;
     protected final String charmId;
+    @Nullable
     private final List<String> lore;
 
-    public CharmItem(Settings settings, Item polymerItem, PolymerModelData modelData, String charmId, List<String> lore) {
+    public CharmItem(Settings settings, Item polymerItem, PolymerModelData modelData, String charmId, @Nullable List<String> lore) {
         super(settings, polymerItem);
         this.modelData = modelData;
         this.charmId = charmId;
@@ -35,8 +36,10 @@ public class CharmItem extends SimplePolymerItem {
     @Override
     public void appendTooltip(ItemStack stack, TooltipContext context, List<Text> tooltip, TooltipType type) {
         super.appendTooltip(stack, context, tooltip, type);
-        for (String line : lore) {
-            tooltip.add(TextUtils.deserialize(line));
+        if (lore != null) {
+            for (String line : lore) {
+                tooltip.add(TextUtils.deserialize(line));
+            }
         }
     }
 

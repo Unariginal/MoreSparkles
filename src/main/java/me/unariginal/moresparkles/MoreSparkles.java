@@ -57,6 +57,8 @@ public class MoreSparkles implements ModInitializer {
             LOGGER.warn("[MoreSparkles] Polymer is not found; Items will not be loaded!");
         }
 
+        new ScheduledTimerHandler();
+
         ServerLifecycleEvents.SERVER_STARTING.register(server -> {
             this.server = server;
             this.audiences = FabricServerAudiences.of(server);
@@ -64,8 +66,7 @@ public class MoreSparkles implements ModInitializer {
 
         ServerLifecycleEvents.SERVER_STARTED.register(server -> {
             WebhookManager.connectWebhook();
-            BoostManager.loadFromConfig();
-            new ScheduledTimerHandler();
+            BoostManager.loadGlobalBoosts();
             EventManager.register();
 
             List<Function1<ServerPlayerEntity, SpawningInfluence>> builders = new ArrayList<>(PlayerSpawnerFactory.INSTANCE.getInfluenceBuilders());
@@ -101,8 +102,10 @@ public class MoreSparkles implements ModInitializer {
 
             if (BoostManager.globalBoosts != null) {
                 BoostManager.globalBoosts.values().forEach(boost -> {
-                    Boost playerBoost = PlayerBoostCache.currentBoost(player, boost.boostType);
-                    if (playerBoost != null) playerBoost.pause();
+                    if (CONFIG.pausePlayerBoostsDuringGlobalBoost) {
+                        Boost playerBoost = PlayerBoostCache.currentBoost(player, boost.boostType);
+                        if (playerBoost != null) playerBoost.pause();
+                    }
                     if (boost.bossBar != null) player.showBossBar(boost.bossBar);
                 });
             }
@@ -117,7 +120,7 @@ public class MoreSparkles implements ModInitializer {
                 if (CONFIG.pausePlayerBoostsOnShutdown) PlayerBoostCache.pauseAll(player);
                 PlayerDataManager.savePlayerBoostData(player);
             }
-            Config.saveGlobalBoostData();
+            GlobalBoostDataManager.saveGlobalBoostData();
             Threading.shutdown();
             if (WebhookManager.webhook != null) WebhookManager.webhook.close();
         });
@@ -141,6 +144,5 @@ public class MoreSparkles implements ModInitializer {
     public void reload() {
         load();
         WebhookManager.connectWebhook();
-        Config.saveGlobalBoostData();
     }
 }

@@ -30,7 +30,7 @@ public class Boost {
     @Nullable
     public String boostPauseTime = null;
 
-    public Boost(boolean isGlobal, BoostType boostType, float multiplier, int duration) {
+    public Boost(boolean isGlobal, BoostType boostType, float multiplier, long duration) {
         this.boostType = boostType;
         this.multiplier = multiplier;
         this.boostStartTime = LocalDateTime.now().toString();
@@ -81,7 +81,8 @@ public class Boost {
     }
 
     public long getTimeRemaining() throws DateTimeException {
-        return Duration.between(LocalDateTime.now(), LocalDateTime.parse(boostExpirationTime)).toSeconds();
+        LocalDateTime from = boostPauseTime != null ? LocalDateTime.parse(boostPauseTime) : LocalDateTime.now();
+        return Duration.between(from, LocalDateTime.parse(boostExpirationTime)).toSeconds();
     }
 
     public void updateBossbar() {

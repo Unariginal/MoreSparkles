@@ -74,7 +74,7 @@ public class EventManager {
                     ItemsConfig.CharmData charmData = ITEMS_CONFIG.charms.get(key);
                     if (charmData == null || charmData.boostType != BoostType.SHINY) continue;
 
-                    if (player.getInventory().contains(CharmItemsGroup.charmItems.get(key).getDefaultStack())) {
+                    if (player.getInventory().contains(s -> s.isOf(CharmItemsGroup.charmItems.get(key)))) {
                         rate = Math.max(rate / charmData.multiplier, 1);
                     }
                 }
@@ -100,7 +100,7 @@ public class EventManager {
             }
         }
 
-        experience *= (int) multiplier;
+        experience = Math.round(experience * multiplier);
         event.setExperience(experience);
     }
 

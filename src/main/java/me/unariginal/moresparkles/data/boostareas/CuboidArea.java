@@ -7,7 +7,6 @@ import net.minecraft.server.world.ServerWorld;
 import net.minecraft.util.Identifier;
 
 import java.util.Optional;
-import java.util.Random;
 
 public class CuboidArea extends BoostArea {
     public CuboidShapeSettings shape;
@@ -22,12 +21,13 @@ public class CuboidArea extends BoostArea {
         if (particles.enabled) {
             Optional<ParticleType<?>> particleType = Registries.PARTICLE_TYPE.getOrEmpty(Identifier.of(particles.identifier));
             if (particleType.isPresent() && particleType.get() instanceof SimpleParticleType simpleParticleType) {
-                int totalParticles = new Random().nextInt(Math.max((int) (shape.xMax - shape.xMin), (int) (shape.zMax - shape.zMin)), (int) Math.max((int) shape.xMin + ((shape.xMax - shape.xMin) / 2), (int) shape.zMax + ((shape.zMax - shape.zMin) / 2)));
+                ServerWorld world = getWorld(shape);
+                int totalParticles = randomParticleCount(Math.max(Math.abs(shape.xMax - shape.xMin), Math.abs(shape.zMax - shape.zMin)));
                 for (int i = 0; i < totalParticles; i++) {
-                    double cX = new Random().nextDouble(shape.xMin, shape.xMax);
-                    double cY = new Random().nextDouble(shape.yMin, shape.yMax);
-                    double cZ = new Random().nextDouble(shape.zMin, shape.zMax);
-                    getWorld(shape).spawnParticles(simpleParticleType, cX, cY, cZ, particles.count, 1, 1, 1, particles.speed);
+                    double cX = randomBetween(shape.xMin, shape.xMax);
+                    double cY = randomBetween(shape.yMin, shape.yMax);
+                    double cZ = randomBetween(shape.zMin, shape.zMax);
+                    world.spawnParticles(simpleParticleType, cX, cY, cZ, particles.count, 1, 1, 1, particles.speed);
                 }
             }
         }

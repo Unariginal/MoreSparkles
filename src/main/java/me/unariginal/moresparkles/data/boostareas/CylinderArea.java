@@ -7,7 +7,6 @@ import net.minecraft.server.world.ServerWorld;
 import net.minecraft.util.Identifier;
 
 import java.util.Optional;
-import java.util.Random;
 
 public class CylinderArea extends BoostArea {
     public CylinderShapeSettings shape;
@@ -22,15 +21,16 @@ public class CylinderArea extends BoostArea {
         if (particles.enabled) {
             Optional<ParticleType<?>> particleType = Registries.PARTICLE_TYPE.getOrEmpty(Identifier.of(particles.identifier));
             if (particleType.isPresent() && particleType.get() instanceof SimpleParticleType simpleParticleType) {
-                int totalParticles = new Random().nextInt((int) shape.radius * 2, (int) (shape.radius * 4));
+                ServerWorld world = getWorld(shape);
+                int totalParticles = randomParticleCount(Math.abs(shape.radius) * 2);
                 for (int i = 0; i < totalParticles; i++) {
-                    double angle = new Random().nextDouble(0, 2 * Math.PI);
-                    double distance = new Random().nextDouble(0, shape.radius);
+                    double angle = randomBetween(0, 2 * Math.PI);
+                    double distance = randomBetween(0, shape.radius);
 
                     double cX = shape.centerX + distance * Math.cos(angle);
-                    double cY = new Random().nextDouble(shape.yMin, shape.yMax);
+                    double cY = randomBetween(shape.yMin, shape.yMax);
                     double cZ = shape.centerZ + distance * Math.sin(angle);
-                    getWorld(shape).spawnParticles(simpleParticleType, cX, cY, cZ, particles.count, 1, 1, 1, particles.speed);
+                    world.spawnParticles(simpleParticleType, cX, cY, cZ, particles.count, 1, 1, 1, particles.speed);
                 }
             }
         }

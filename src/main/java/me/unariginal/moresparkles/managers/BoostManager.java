@@ -4,6 +4,8 @@ import com.google.common.collect.Maps;
 import com.google.common.collect.Queues;
 import me.unariginal.moresparkles.MoreSparkles;
 import me.unariginal.moresparkles.cache.PlayerBoostCache;
+import me.unariginal.moresparkles.configs.GlobalBoostData;
+import me.unariginal.moresparkles.configs.GlobalBoostDataManager;
 import me.unariginal.moresparkles.configs.ItemsConfig;
 import me.unariginal.moresparkles.data.Boost;
 import me.unariginal.moresparkles.data.BoostType;
@@ -21,7 +23,7 @@ public class BoostManager {
     public static Map<BoostType, Boost> globalBoosts = Maps.newConcurrentMap();
     public static Map<BoostType, Queue<Boost>> queuedGlobalBoosts = Maps.newConcurrentMap();
 
-    public static void loadFromConfig() {
+    public static void loadGlobalBoosts() {
         if (MoreSparkles.INSTANCE.audiences != null) {
             globalBoosts.values().forEach(boost -> {
                 if (boost.bossBar != null) MoreSparkles.INSTANCE.audiences.all().hideBossBar(boost.bossBar);
@@ -30,8 +32,11 @@ public class BoostManager {
         globalBoosts.clear();
         queuedGlobalBoosts.clear();
 
-        if (CONFIG.activeGlobalBoosts != null) {
-            CONFIG.activeGlobalBoosts.forEach((type, boost) -> {
+        GlobalBoostData data = GlobalBoostDataManager.loadGlobalBoostData();
+        if (data == null) return;
+
+        if (data.activeBoosts != null) {
+            data.activeBoosts.forEach((type, boost) -> {
                 boost.setupBossbar(true);
                 boost.resume();
                 globalBoosts.put(type, boost);
@@ -41,8 +46,8 @@ public class BoostManager {
             });
         }
 
-        if (CONFIG.queuedGlobalBoosts != null) {
-            CONFIG.queuedGlobalBoosts.forEach((type, queuedBoosts) -> {
+        if (data.queuedBoosts != null) {
+            data.queuedBoosts.forEach((type, queuedBoosts) -> {
                 Queue<Boost> queue = Queues.newConcurrentLinkedQueue();
                 queuedBoosts.forEach(boost -> {
                     boost.setupBossbar(true);
@@ -51,6 +56,10 @@ public class BoostManager {
                 queuedGlobalBoosts.put(type, queue);
             });
         }
+    }
+
+    public static boolean shouldPausePlayerBoosts(BoostType type) {
+        return CONFIG.pausePlayerBoostsDuringGlobalBoost && globalBoosts.containsKey(type);
     }
 
     public static void pausePlayerBoosts(BoostType type) {
@@ -70,7 +79,7 @@ public class BoostManager {
     }
 
     public static float getGenericMultiplierTotal(ServerPlayerEntity player, BoostType boostType) {
-        float multiplier = 1.0f;
+        float multiplier = 0.0f;
         Boost boost = PlayerBoostCache.currentBoost(player, boostType);
         if (boost != null && boost.boostPauseTime == null) {
             multiplier += boost.multiplier;
@@ -93,7 +102,7 @@ public class BoostManager {
                 ItemsConfig.CharmData charmData = ITEMS_CONFIG.charms.get(key);
                 if (charmData == null || charmData.boostType != boostType) continue;
 
-                if (player.getInventory().contains(CharmItemsGroup.charmItems.get(key).getDefaultStack())) {
+                if (player.getInventory().contains(s -> s.isOf(CharmItemsGroup.charmItems.get(key)))) {
                     multiplier += charmData.multiplier;
                     break;
                 }

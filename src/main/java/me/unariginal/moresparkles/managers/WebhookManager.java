@@ -1,6 +1,7 @@
 package me.unariginal.moresparkles.managers;
 
 import club.minnced.discord.webhook.WebhookClient;
+import club.minnced.discord.webhook.exception.HttpException;
 import club.minnced.discord.webhook.receive.ReadonlyMessage;
 import club.minnced.discord.webhook.send.WebhookEmbed;
 import club.minnced.discord.webhook.send.WebhookEmbedBuilder;
@@ -13,6 +14,7 @@ import org.jetbrains.annotations.Nullable;
 
 import java.awt.*;
 import java.util.concurrent.CompletableFuture;
+import java.util.concurrent.CompletionException;
 
 import static me.unariginal.moresparkles.configs.ConfigManager.CONFIG;
 import static me.unariginal.moresparkles.configs.ConfigManager.MESSAGES;
@@ -23,8 +25,16 @@ public class WebhookManager {
     public static WebhookClient webhook = null;
 
     public static void connectWebhook() {
+        if (webhook != null) {
+            webhook.close();
+            webhook = null;
+        }
         if (CONFIG.webhookSettings != null && CONFIG.webhookSettings.enabled) {
-            webhook = WebhookClient.withUrl(CONFIG.webhookSettings.url);
+            try {
+                webhook = WebhookClient.withUrl(CONFIG.webhookSettings.url);
+            } catch (IllegalArgumentException e) {
+                MoreSparkles.LOGGER.error("[MoreSparkles] Invalid webhook url, webhooks are disabled until it is fixed", e);
+            }
         }
     }
 
@@ -51,9 +61,18 @@ public class WebhookManager {
         return webhook.edit(id, buildWebhookEmbed(boost).build())
                 .thenApply(ReadonlyMessage::getId)
                 .exceptionally(e -> {
+                    if (isUnknownMessage(e)) {
+                        MoreSparkles.logInfo("Webhook message " + id + " no longer exists, a new one will be sent");
+                        return null;
+                    }
                     MoreSparkles.LOGGER.error("[MoreSparkles] Failed to edit webhook", e);
-                    return null;
+                    return id;
                 });
+    }
+
+    private static boolean isUnknownMessage(Throwable throwable) {
+        Throwable cause = throwable instanceof CompletionException && throwable.getCause() != null ? throwable.getCause() : throwable;
+        return cause instanceof HttpException httpException && httpException.getCode() == 404;
     }
 
     public static WebhookMessageBuilder buildWebhookEmbed(Boost boost) {
