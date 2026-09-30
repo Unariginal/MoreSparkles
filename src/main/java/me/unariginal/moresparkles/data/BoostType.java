@@ -7,8 +7,8 @@ public enum BoostType {
     EV("EV"), // Done
     IV("IV"), // Done
     BERRY("Berry"), // Done
-    EGG("Egg Laying"),
-    HATCH("Egg Hatching"),
+//    EGG("Egg Laying"),
+//    HATCH("Egg Hatching"),
     CATCH_RATE("Catch Rate"), // Done
     MARK("Mark"), // Done
     ALPHA("Alpha"), // Done

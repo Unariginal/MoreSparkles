@@ -109,6 +109,6 @@ public class BoostManager {
             }
         }
 
-        return multiplier;
+        return multiplier > 0 ? multiplier : 1.0f;
     }
 }

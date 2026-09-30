@@ -68,6 +68,7 @@ public class MoreSparkles implements ModInitializer {
             WebhookManager.connectWebhook();
             BoostManager.loadGlobalBoosts();
             EventManager.register();
+            SpawnsManager.register();
 
             List<Function1<ServerPlayerEntity, SpawningInfluence>> builders = new ArrayList<>(PlayerSpawnerFactory.INSTANCE.getInfluenceBuilders());
             builders.add(AlphaSpawningInfluence::new);

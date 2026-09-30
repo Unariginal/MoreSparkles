@@ -19,7 +19,7 @@ public class SpawnBucketInfluence implements SpawningInfluence {
     @Override
     public void affectBucketWeights(@NotNull Map<String, Float> bucketWeights) {
         float multiplier = getGenericMultiplierTotal(player, BoostType.SPAWN_BUCKET);
-        if (multiplier == 1F) return;
+        if (multiplier <= 0F || multiplier == 1F) return;
 
         Float bossWeight = bucketWeights.get("boss");
         float originalNonBossWeightTotal = (float) bucketWeights.entrySet().stream()

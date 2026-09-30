@@ -55,18 +55,6 @@
       "bar_text": "<gray>「</gray><aqua>🌐</aqua><gray>」</gray><#F1C40F><bold>✦ %boost_type% Boost</bold></#F1C40F> <dark_gray>•</dark_gray> <gold>%boost_multiplier%x</gold> <dark_gray>•</dark_gray> <gray>%boost_time_remaining% left</gray>",
       "bar_text_paused": "<gray>「</gray><aqua>🌐</aqua><gray>」</gray><#F1C40F><bold>✦ %boost_type% Boost</bold></#F1C40F> <dark_gray>•</dark_gray> <gold>%boost_multiplier%x</gold> <dark_gray>•</dark_gray> <red><bold>PAUSED</bold></red>"
     },
-    "EGG": {
-      "bar_color": "white",
-      "bar_overlay": "progress",
-      "bar_text": "<gray>「</gray><aqua>🌐</aqua><gray>」</gray><#ECF0F1><bold>✦ %boost_type% Boost</bold></#ECF0F1> <dark_gray>•</dark_gray> <gold>%boost_multiplier%x</gold> <dark_gray>•</dark_gray> <gray>%boost_time_remaining% left</gray>",
-      "bar_text_paused": "<gray>「</gray><aqua>🌐</aqua><gray>」</gray><#ECF0F1><bold>✦ %boost_type% Boost</bold></#ECF0F1> <dark_gray>•</dark_gray> <gold>%boost_multiplier%x</gold> <dark_gray>•</dark_gray> <red><bold>PAUSED</bold></red>"
-    },
-    "HATCH": {
-      "bar_color": "yellow",
-      "bar_overlay": "notched_10",
-      "bar_text": "<gray>「</gray><aqua>🌐</aqua><gray>」</gray><#E67E22><bold>✦ %boost_type% Boost</bold></#E67E22> <dark_gray>•</dark_gray> <gold>%boost_multiplier%x</gold> <dark_gray>•</dark_gray> <gray>%boost_time_remaining% left</gray>",
-      "bar_text_paused": "<gray>「</gray><aqua>🌐</aqua><gray>」</gray><#E67E22><bold>✦ %boost_type% Boost</bold></#E67E22> <dark_gray>•</dark_gray> <gold>%boost_multiplier%x</gold> <dark_gray>•</dark_gray> <red><bold>PAUSED</bold></red>"
-    },
     "CATCH_RATE": {
       "bar_color": "red",
       "bar_overlay": "notched_10",
@@ -128,18 +116,6 @@
       "bar_overlay": "progress",
       "bar_text": "<gray>「</gray><green>👤</green><gray>」</gray><#F1C40F><bold>✦ %boost_type% Boost</bold></#F1C40F> <dark_gray>•</dark_gray> <gold>%boost_multiplier%x</gold> <dark_gray>•</dark_gray> <gray>%boost_time_remaining% left</gray>",
       "bar_text_paused": "<gray>「</gray><green>👤</green><gray>」</gray><#F1C40F><bold>✦ %boost_type% Boost</bold></#F1C40F> <dark_gray>•</dark_gray> <gold>%boost_multiplier%x</gold> <dark_gray>•</dark_gray> <red><bold>PAUSED</bold></red>"
-    },
-    "EGG": {
-      "bar_color": "white",
-      "bar_overlay": "progress",
-      "bar_text": "<gray>「</gray><green>👤</green><gray>」</gray><#ECF0F1><bold>✦ %boost_type% Boost</bold></#ECF0F1> <dark_gray>•</dark_gray> <gold>%boost_multiplier%x</gold> <dark_gray>•</dark_gray> <gray>%boost_time_remaining% left</gray>",
-      "bar_text_paused": "<gray>「</gray><green>👤</green><gray>」</gray><#ECF0F1><bold>✦ %boost_type% Boost</bold></#ECF0F1> <dark_gray>•</dark_gray> <gold>%boost_multiplier%x</gold> <dark_gray>•</dark_gray> <red><bold>PAUSED</bold></red>"
-    },
-    "HATCH": {
-      "bar_color": "yellow",
-      "bar_overlay": "notched_10",
-      "bar_text": "<gray>「</gray><green>👤</green><gray>」</gray><#E67E22><bold>✦ %boost_type% Boost</bold></#E67E22> <dark_gray>•</dark_gray> <gold>%boost_multiplier%x</gold> <dark_gray>•</dark_gray> <gray>%boost_time_remaining% left</gray>",
-      "bar_text_paused": "<gray>「</gray><green>👤</green><gray>」</gray><#E67E22><bold>✦ %boost_type% Boost</bold></#E67E22> <dark_gray>•</dark_gray> <gold>%boost_multiplier%x</gold> <dark_gray>•</dark_gray> <red><bold>PAUSED</bold></red>"
     },
     "CATCH_RATE": {
       "bar_color": "red",
@@ -273,46 +249,6 @@
       "message": "",
       "title": "🍇 %boost_type% Boost Activated!",
       "color": "#F1C40F",
-      "thumbnail_url": "",
-      "fields": [
-        {
-          "inline": true,
-          "name": "Multiplier",
-          "value": "%boost_multiplier%x"
-        },
-        {
-          "inline": true,
-          "name": "Time Remaining",
-          "value": "%boost_time_remaining%"
-        }
-      ]
-    },
-    "EGG": {
-      "username": "%boost_type% Boost",
-      "avatar_url": "",
-      "message": "",
-      "title": "🥚 %boost_type% Boost Activated!",
-      "color": "#3498DB",
-      "thumbnail_url": "",
-      "fields": [
-        {
-          "inline": true,
-          "name": "Multiplier",
-          "value": "%boost_multiplier%x"
-        },
-        {
-          "inline": true,
-          "name": "Time Remaining",
-          "value": "%boost_time_remaining%"
-        }
-      ]
-    },
-    "HATCH": {
-      "username": "%boost_type% Boost",
-      "avatar_url": "",
-      "message": "",
-      "title": "🐣 %boost_type% Boost Activated!",
-      "color": "#E67E22",
       "thumbnail_url": "",
       "fields": [
         {

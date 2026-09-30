@@ -1,5 +1,6 @@
 package me.unariginal.moresparkles.managers;
 
+import com.cobblemon.mod.common.api.Priority;
 import com.cobblemon.mod.common.api.events.CobblemonEvents;
 import com.cobblemon.mod.common.api.events.berry.BerryHarvestEvent;
 import com.cobblemon.mod.common.api.events.entity.SpawnEvent;
@@ -31,7 +32,9 @@ public class EventManager {
         CobblemonEvents.EXPERIENCE_GAINED_EVENT_PRE.subscribe(EventManager::experienceBoost);
         CobblemonEvents.EV_GAINED_EVENT_PRE.subscribe(EventManager::evBoost);
         CobblemonEvents.BERRY_HARVEST.subscribe(EventManager::berryHarvestBoost);
-        CobblemonEvents.POKEMON_ENTITY_SPAWN.subscribe(EventManager::markBoost);
+        CobblemonEvents.POKEMON_CAPTURED.subscribe(Priority.HIGHEST, EventManager::markBoostOnCapture);
+        CobblemonEvents.FOSSIL_REVIVED.subscribe(Priority.HIGHEST, EventManager::markBoostOnFossilRevive);
+        CobblemonEvents.HATCH_EGG_POST.subscribe(Priority.HIGHEST, EventManager::markBoostOnHatch);
         CobblemonEvents.POKEMON_CATCH_RATE.subscribe(EventManager::catchRateBoost);
         CobblemonEvents.POKEMON_ENTITY_SPAWN.subscribe(EventManager::hiddenAbilityBoost);
         CobblemonEvents.POKEMON_CAPTURED.subscribe(EventManager::ivBoostOnCapture);
@@ -140,16 +143,30 @@ public class EventManager {
     }
 
     private static void ivBoostOnFossilRevive(FossilRevivedEvent event) {
+        if (event.getPlayer() == null) return;
         boostIvs(event.getPlayer(), event.getPokemon());
     }
 
-    private static void markBoost(SpawnEvent<PokemonEntity> event) {
-        if (event.getCause().getEntity() instanceof ServerPlayerEntity player) {
-            if (!Config.canBeBoosted(event.getEntity().getPokemon(), BoostType.MARK)) return;
-            float multiplier = getGenericMultiplierTotal(player, BoostType.MARK);
-            if (multiplier == 1) return;
-            event.getEntity().getPokemon().applyPotentialMarks(1.0 + (multiplier / 100));
-        }
+    private static void markBoostOnCapture(PokemonCapturedEvent event) {
+        boostMarks(event.getPlayer(), event.getPokemon());
+    }
+
+    private static void markBoostOnHatch(HatchEggEvent.Post event) {
+        boostIvs(event.getPlayer(), event.getPokemon());
+    }
+
+    private static void markBoostOnFossilRevive(FossilRevivedEvent event) {
+        if (event.getPlayer() == null) return;
+        boostMarks(event.getPlayer(), event.getPokemon());
+    }
+
+    // applyPotentialMarks(chance) succeeds when random(0, 100) / chance < markChance * 100,
+    // so chance is a straight multiplier on each mark group's odds.
+    private static void boostMarks(ServerPlayerEntity player, Pokemon pokemon) {
+        if (!Config.canBeBoosted(pokemon, BoostType.MARK)) return;
+        float multiplier = getGenericMultiplierTotal(player, BoostType.MARK);
+        if (multiplier <= 1) return;
+        pokemon.applyPotentialMarks(multiplier);
     }
 
     private static void catchRateBoost(PokemonCatchRateEvent event) {
